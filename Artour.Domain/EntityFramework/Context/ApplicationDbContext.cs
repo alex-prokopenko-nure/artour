@@ -20,6 +20,11 @@ namespace Artour.Domain.EntityFramework.Context
         }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Tour> Tours { get; set; }
+        public virtual DbSet<Sight> Sights { get; set; }
+        public virtual DbSet<Visit> Visits { get; set; }
+        public virtual DbSet<SightImage> SightImages { get; set; }
+        public virtual DbSet<SightSeen> SightSeens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +36,11 @@ namespace Artour.Domain.EntityFramework.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new TourConfiguration());
+            modelBuilder.ApplyConfiguration(new VisitConfiguration());
+            modelBuilder.ApplyConfiguration(new SightConfiguration());
+            modelBuilder.ApplyConfiguration(new SightImageConfiguration());
+            modelBuilder.ApplyConfiguration(new SightSeenConfiguration());
         }
     }
 }

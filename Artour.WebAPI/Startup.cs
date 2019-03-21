@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
+using Artour.Domain.Dapper.Context;
 
 namespace Artour.WebAPI
 {
@@ -29,6 +30,7 @@ namespace Artour.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>();
+            services.AddSingleton<DapperDbContext>();
             services.ConfigureBLLServices();
             services.AddAutoMapper();
             services.AddCors();

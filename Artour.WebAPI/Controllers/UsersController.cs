@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Artour.WebAPI.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUsersService _usersService;
 
-        public UserController(IUserService userService)
+        public UsersController(IUsersService usersService)
         {
-            _userService = userService;
+            _usersService = usersService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserViewModel>>> GetUsers()
         {
-            var result = await _userService.GetAllUsers();
+            var result = await _usersService.GetAllUsers();
             return Ok(result);
         }
     }

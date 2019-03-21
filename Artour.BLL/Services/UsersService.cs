@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Artour.BLL.Services
 {
-    public class UserService : BaseService, IUserService
+    public class UsersService : BaseService, IUsersService
     {
-        public UserService(ApplicationDbContext applicationDbContext, IMapper mapper)
+        public UsersService(ApplicationDbContext applicationDbContext, IMapper mapper)
             : base(applicationDbContext, mapper)
         {}
 

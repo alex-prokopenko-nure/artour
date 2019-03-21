@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Artour.BLL.Services.Abstractions
 {
-    public interface IUserService
+    public interface IUsersService
     {
         Task<IEnumerable<UserViewModel>> GetAllUsers();
     }

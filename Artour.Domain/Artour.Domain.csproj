@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190320104608_Structure.cs" />
+    <Compile Remove="Migrations\20190320135424_Structure.cs" />
+    <Compile Remove="Migrations\20190320135850_Structure.cs" />
+    <Compile Remove="Migrations\20190320140133_Structure.cs" />
+    <Compile Remove="Migrations\20190320140303_Structure.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>

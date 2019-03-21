@@ -12,7 +12,12 @@ namespace Artour.WebAPI.Configurations
     {
         public static void ConfigureBLLServices(this IServiceCollection services)
         {
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IToursService, ToursService>();
+            services.AddScoped<ISightsService, SightsService>();
+            services.AddScoped<IVisitsService, VisitsService>();
+            services.AddScoped<ISightImagesService, SightImagesService>();
+            services.AddScoped<ISightSeensService, SightSeensService>();
         }
     }
 }
