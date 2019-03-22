@@ -16,6 +16,11 @@ namespace Artour.Domain.Models.Configurations
             builder.HasKey(u => u.SightImageId);
 
             builder.Property(u => u.SightId).HasColumnName("sight_id");
+            builder.Property(u => u.Description).HasColumnName("description");
+            builder.Property(u => u.FileSize).HasColumnName("file_size");
+            builder.Property(u => u.FullFilename).HasColumnName("full_file_name");
+            builder.Property(u => u.Order).HasColumnName("order");
+            builder.Property(u => u.UploadedOn).HasColumnName("uploaded_on");
         }
     }
 }

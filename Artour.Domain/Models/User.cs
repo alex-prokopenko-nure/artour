@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Artour.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,7 @@ namespace Artour.Domain.Models
         public String Password { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
+        public ProfileType ProfileType { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
 }

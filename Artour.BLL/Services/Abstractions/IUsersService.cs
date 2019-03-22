@@ -9,5 +9,10 @@ namespace Artour.BLL.Services.Abstractions
     public interface IUsersService
     {
         Task<IEnumerable<UserViewModel>> GetAllUsers();
+        Task<UserViewModel> GetUserById(Int32 userId);
+        Task<String> LoginUser(LoginViewModel login);
+        Task RegisterUser(RegisterViewModel newUser);
+        Task ChangePassword(Int32 userId, ChangePasswordViewModel passwordViewModel);
+        Task UpdateUserInfo(Int32 userId, UserViewModel userViewModel);
     }
 }

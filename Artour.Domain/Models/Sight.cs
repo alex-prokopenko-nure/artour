@@ -8,6 +8,8 @@ namespace Artour.Domain.Models
     {
         public Int32 SightId { get; set; }
         public Int32 TourId { get; set; }
+        public String Title { get; set; }
+        public String Description { get; set; }
 
         public virtual Tour Tour { get; set; }
         public virtual IEnumerable<SightImage> Images { get; set; }

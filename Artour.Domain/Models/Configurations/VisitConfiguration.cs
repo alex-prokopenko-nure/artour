@@ -17,6 +17,8 @@ namespace Artour.Domain.Models.Configurations
 
             builder.Property(u => u.UserId).HasColumnName("user_id");
             builder.Property(u => u.TourId).HasColumnName("tour_id");
+            builder.Property(u => u.StartDate).HasColumnName("start_date");
+            builder.Property(u => u.EndDate).HasColumnName("end_date");
         }
     }
 }

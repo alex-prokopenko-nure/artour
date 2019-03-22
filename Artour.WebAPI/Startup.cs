@@ -14,6 +14,9 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
 using Artour.Domain.Dapper.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Artour.BLL.Models;
 
 namespace Artour.WebAPI
 {
@@ -29,10 +32,45 @@ namespace Artour.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSettings jwtSettings = new JwtSettings();
+            Configuration.Bind(nameof(JwtSettings), jwtSettings);
+
             services.AddDbContext<ApplicationDbContext>();
             services.AddSingleton<DapperDbContext>();
             services.ConfigureBLLServices();
             services.AddAutoMapper();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        // will the lifetime be validated
+                        ValidateLifetime = jwtSettings.ValidateLifetime,
+
+                        // specifies whether the publisher will validate when validating the token
+                        ValidateIssuer = jwtSettings.ValidateIssuer,
+
+                        // a string representing the publisher
+                        ValidIssuer = jwtSettings.ValidIssuer,
+
+                        // setting the token consumer
+                        ValidAudience = jwtSettings.ValidAudience,
+
+                        // Will the token consumer be validated
+                        ValidateAudience = jwtSettings.ValidateAudience,
+
+                        // validate the security key
+                        ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey,
+
+                        // set the security key
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Convert.FromBase64String(jwtSettings.IssuerSigningKey))
+                    };
+                });
+
+            services.AddAuthorization();
+
             services.AddCors();
 
             services.AddSwaggerGen(c =>
@@ -64,6 +102,8 @@ namespace Artour.WebAPI
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials());
+
+            app.UseAuthentication();
 
             app.UseMvc();
             app.UseSwagger();
