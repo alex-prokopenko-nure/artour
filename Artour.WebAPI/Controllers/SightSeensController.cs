@@ -1,4 +1,5 @@
 ﻿using Artour.BLL.Services.Abstractions;
+using Artour.BLL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,13 @@ namespace Artour.WebAPI.Controllers
         public SightSeensController(ISightSeensService sightSeensService)
         {
             _sightSeensService = sightSeensService;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateSightSeen([FromBody]SightSeenViewModel sightSeen)
+        {
+            await _sightSeensService.CreateSightSeen(sightSeen);
+            return Ok();
         }
     }
 }
