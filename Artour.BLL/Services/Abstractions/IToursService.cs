@@ -11,6 +11,7 @@ namespace Artour.BLL.Services.Abstractions
         Task<IEnumerable<TourViewModel>> GetAllTours();
         Task<TourViewModel> GetTour(Int32 tourId);
         Task<IEnumerable<TourViewModel>> GetUsersTours(Int32 userId);
+        Task<TourStatisticsViewModel> GetTourStatistics(Int32 tourId);
         Task<TourViewModel> CreateTour(TourViewModel tour);
         Task<TourViewModel> UpdateTour(Int32 tourId, TourViewModel tour);
         Task DeleteTour(Int32 tourId);

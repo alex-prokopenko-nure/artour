@@ -33,6 +33,13 @@ namespace Artour.WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{tourId}/statistics")]
+        public async Task<ActionResult<TourStatisticsViewModel>> GetTourStatistics(Int32 tourId)
+        {
+            var result = await _toursService.GetTourStatistics(tourId);
+            return Ok(result);
+        }
+
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<TourViewModel>>> GetUsersTours(Int32 userId)
         {
