@@ -18,6 +18,7 @@ namespace Artour.WebAPI.Configurations
             services.AddScoped<IVisitsService, VisitsService>();
             services.AddScoped<ISightImagesService, SightImagesService>();
             services.AddScoped<ISightSeensService, SightSeensService>();
+            services.AddScoped<IMailSender, MailSender>();
         }
     }
 }
