@@ -20,4 +20,13 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Common\EmailTemplates\EmailConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Common\EmailTemplates\PasswordRecovery.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

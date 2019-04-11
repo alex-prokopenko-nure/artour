@@ -14,10 +14,12 @@ namespace Artour.WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
+        private readonly IMailSender _mailSender;
 
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, IMailSender mailSender)
         {
             _usersService = usersService;
+            _mailSender = mailSender;
         }
 
         [HttpGet]
@@ -61,6 +63,21 @@ namespace Artour.WebAPI.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpPost("send-confirmation-email")]
+        public async Task<ActionResult> SendConfirmationEmail([FromBody]String email)
+        {
+            (UserViewModel user, string token) = await _usersService.GetUserInfoByEmail(email);
+
+            if (user == null || token == null)
+            {
+                return BadRequest();
+            }
+
+            await _mailSender.SendConfirmationEmail(user, token);
+
+            return NoContent();
         }
 
         [Authorize]

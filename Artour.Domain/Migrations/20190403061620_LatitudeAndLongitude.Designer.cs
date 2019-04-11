@@ -3,99 +3,21 @@ using System;
 using Artour.Domain.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Artour.Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403061620_LatitudeAndLongitude")]
+    partial class LatitudeAndLongitude
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Artour.Domain.Models.City", b =>
-                {
-                    b.Property<int>("CityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("city_id");
-
-                    b.Property<int>("CountryId")
-                        .HasColumnName("country_id");
-
-                    b.Property<string>("Name")
-                        .HasColumnName("name");
-
-                    b.HasKey("CityId");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("city");
-                });
-
-            modelBuilder.Entity("Artour.Domain.Models.Comment", b =>
-                {
-                    b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("comment_id");
-
-                    b.Property<int>("Mark")
-                        .HasColumnName("mark");
-
-                    b.Property<string>("Text")
-                        .HasColumnName("text");
-
-                    b.Property<int>("TourId")
-                        .HasColumnName("tour_id");
-
-                    b.Property<int>("UserId")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("CommentId");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("comment");
-                });
-
-            modelBuilder.Entity("Artour.Domain.Models.Country", b =>
-                {
-                    b.Property<int>("CountryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("country_id");
-
-                    b.Property<string>("Code")
-                        .HasColumnName("code");
-
-                    b.Property<string>("Name")
-                        .HasColumnName("name");
-
-                    b.Property<int>("RegionId")
-                        .HasColumnName("region_id");
-
-                    b.HasKey("CountryId");
-
-                    b.HasIndex("RegionId");
-
-                    b.ToTable("country");
-                });
-
-            modelBuilder.Entity("Artour.Domain.Models.Region", b =>
-                {
-                    b.Property<int>("RegionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("region_id");
-
-                    b.Property<string>("Name")
-                        .HasColumnName("name");
-
-                    b.HasKey("RegionId");
-
-                    b.ToTable("region");
-                });
 
             modelBuilder.Entity("Artour.Domain.Models.Sight", b =>
                 {
@@ -184,9 +106,6 @@ namespace Artour.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("tour_id");
 
-                    b.Property<int?>("CityId")
-                        .HasColumnName("city_id");
-
                     b.Property<string>("Description")
                         .HasColumnName("description");
 
@@ -197,8 +116,6 @@ namespace Artour.Domain.Migrations
                         .HasColumnName("title");
 
                     b.HasKey("TourId");
-
-                    b.HasIndex("CityId");
 
                     b.ToTable("tour");
                 });
@@ -264,30 +181,6 @@ namespace Artour.Domain.Migrations
                     b.ToTable("visit");
                 });
 
-            modelBuilder.Entity("Artour.Domain.Models.City", b =>
-                {
-                    b.HasOne("Artour.Domain.Models.Country", "Country")
-                        .WithMany("Cities")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Artour.Domain.Models.Comment", b =>
-                {
-                    b.HasOne("Artour.Domain.Models.Tour")
-                        .WithMany("Comments")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Artour.Domain.Models.Country", b =>
-                {
-                    b.HasOne("Artour.Domain.Models.Region", "Region")
-                        .WithMany("Countries")
-                        .HasForeignKey("RegionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Artour.Domain.Models.Sight", b =>
                 {
                     b.HasOne("Artour.Domain.Models.Tour", "Tour")
@@ -315,13 +208,6 @@ namespace Artour.Domain.Migrations
                         .WithMany("SightSeens")
                         .HasForeignKey("VisitId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Artour.Domain.Models.Tour", b =>
-                {
-                    b.HasOne("Artour.Domain.Models.City", "City")
-                        .WithMany("Tours")
-                        .HasForeignKey("CityId");
                 });
 
             modelBuilder.Entity("Artour.Domain.Models.Visit", b =>

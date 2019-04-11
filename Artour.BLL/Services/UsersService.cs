@@ -68,6 +68,17 @@ namespace Artour.BLL.Services
             return _mapper.Map<UserViewModel>(result);
         }
 
+        public async Task<(UserViewModel user, string token)> GetUserInfoByEmail(String email)
+        {
+            var result = await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (result == null)
+            {
+                return (null, null);
+            }
+            var token = BuildToken(result.UserId, false);
+            return (_mapper.Map<UserViewModel>(result), token);
+        }
+
         public async Task<String> LoginUser(LoginViewModel login)
         {
             var passwordHash = CryptoHelper.GetMD5Hash(login.Password);

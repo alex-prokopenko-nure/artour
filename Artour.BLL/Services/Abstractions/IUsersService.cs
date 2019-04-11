@@ -14,5 +14,6 @@ namespace Artour.BLL.Services.Abstractions
         Task RegisterUser(RegisterViewModel newUser);
         Task ChangePassword(Int32 userId, ChangePasswordViewModel passwordViewModel);
         Task UpdateUserInfo(Int32 userId, UserViewModel userViewModel);
+        Task<(UserViewModel user, string token)> GetUserInfoByEmail(String email);
     }
 }
