@@ -25,6 +25,10 @@ namespace Artour.Domain.EntityFramework.Context
         public virtual DbSet<Visit> Visits { get; set; }
         public virtual DbSet<SightImage> SightImages { get; set; }
         public virtual DbSet<SightSeen> SightSeens { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Region> Regions { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,6 +45,10 @@ namespace Artour.Domain.EntityFramework.Context
             modelBuilder.ApplyConfiguration(new SightConfiguration());
             modelBuilder.ApplyConfiguration(new SightImageConfiguration());
             modelBuilder.ApplyConfiguration(new SightSeenConfiguration());
+            modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new RegionConfiguration());
+            modelBuilder.ApplyConfiguration(new CountryConfiguration());
+            modelBuilder.ApplyConfiguration(new CityConfiguration());
         }
     }
 }

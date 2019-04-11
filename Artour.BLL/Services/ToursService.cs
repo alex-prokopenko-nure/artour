@@ -1,4 +1,5 @@
-﻿using Artour.BLL.Services.Abstractions;
+﻿using Artour.BLL.Helper;
+using Artour.BLL.Services.Abstractions;
 using Artour.BLL.ViewModels;
 using Artour.Domain.EntityFramework.Context;
 using Artour.Domain.Models;
@@ -38,6 +39,8 @@ namespace Artour.BLL.Services
         public async Task<IEnumerable<TourViewModel>> GetAllTours()
         {
             var result = await _applicationDbContext.Tours
+                .Include(x => x.City)
+                .Include(x => x.Comments)
                 .Include(x => x.Sights)
                 .ThenInclude(x => x.Images)
                 .ToListAsync();
@@ -48,6 +51,8 @@ namespace Artour.BLL.Services
         public async Task<TourViewModel> GetTour(int tourId)
         {
             var result = await _applicationDbContext.Tours
+                .Include(x => x.City)
+                .Include(x => x.Comments)
                 .Include(x => x.Sights)
                 .ThenInclude(x => x.Images)
                 .FirstOrDefaultAsync(x => x.TourId == tourId);
@@ -58,6 +63,8 @@ namespace Artour.BLL.Services
         public async Task<IEnumerable<TourViewModel>> GetUsersTours(Int32 userId)
         {
             var result = await _applicationDbContext.Tours
+                .Include(x => x.City)
+                .Include(x => x.Comments)
                 .Include(x => x.Sights)
                 .ThenInclude(x => x.Images)
                 .Where(x => x.OwnerId == userId)
@@ -74,6 +81,21 @@ namespace Artour.BLL.Services
             _applicationDbContext.Tours.Update(tourToUpdate);
             await _applicationDbContext.SaveChangesAsync();
             return _mapper.Map<TourViewModel>(tourToUpdate);
+        }
+
+        public async Task<TourStatisticsViewModel> GetTourStatistics(int tourId)
+        {
+            var visits = await _applicationDbContext.Visits.Where(x => x.TourId == tourId && x.EndDate != null).ToListAsync();
+            var comments = await _applicationDbContext.Comments.Where(x => x.TourId == tourId).ToListAsync();
+            var visitsNumber = visits.Count();
+            var usersVisited = visits.Distinct(new UsersVisitComparer()).Count();
+            var visitsLastWeek = visits.Where(x => (DateTimeOffset.Now - x.StartDate).TotalDays < 7).Count();
+            var averageTourTime = visitsNumber != 0 ? visits.Average(x => (x.EndDate - x.StartDate).TotalMilliseconds) : 0;
+            var commentsNumber = comments.Count();
+            var averageMark = commentsNumber != 0 ? comments.Average(x => x.Mark) : 0;
+
+            return new TourStatisticsViewModel
+            { VisitsNumber = visitsNumber, AverageMark = averageMark, AverageTourTime = averageTourTime, CommentsNumber = commentsNumber, UsersVisited = usersVisited, VisitsLastWeek = visitsLastWeek };
         }
     }
 }

@@ -10,7 +10,10 @@ namespace Artour.BLL.ViewModels
         public Int32 OwnerId { get; set; }
         public String Title { get; set; }
         public String Description { get; set; }
+        public Int32 CityId { get; set; }
 
+        public virtual CityViewModel City { get; set; }
+        public virtual IEnumerable<CommentViewModel> Comments { get; set; }
         public virtual IEnumerable<SightViewModel> Sights { get; set; }
         public virtual IEnumerable<VisitViewModel> Visits { get; set; }
     }
