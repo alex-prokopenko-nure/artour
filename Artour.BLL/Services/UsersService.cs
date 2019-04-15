@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Artour.BLL.Helper;
 using Artour.Domain.Models;
 using Artour.Domain.Enums;
+using System.Linq;
 
 namespace Artour.BLL.Services
 {
@@ -30,6 +31,36 @@ namespace Artour.BLL.Services
             _rnd = new Random();
             jwtSettings = new JwtSettings();
             configuration.Bind(nameof(JwtSettings), jwtSettings);
+        }
+
+        public Int32 ParseJwtToken(String jwtToken)
+        {
+            try
+            {
+                var jwtHandler = new JwtSecurityTokenHandler();
+                var token = jwtHandler.ReadToken(jwtToken) as JwtSecurityToken;
+                var userIdClaim = token.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub);
+
+                if (userIdClaim == null)
+                {
+                    throw new InvalidOperationException("Incorrect token");
+                }
+
+                if (!Int32.TryParse(userIdClaim.Value, out Int32 userId))
+                {
+                    throw new InvalidOperationException("Incorrect token");
+                }
+
+                return userId;
+            }
+            catch (SecurityTokenInvalidLifetimeException)
+            {
+                throw new InvalidOperationException("Token expired");
+            }
+            catch (SecurityTokenInvalidSignatureException)
+            {
+                throw new InvalidOperationException("Invalid token key");
+            }
         }
 
         private String BuildToken(Int32 userId, Boolean remember)
@@ -134,6 +165,27 @@ namespace Artour.BLL.Services
             else
             {
                 throw new ArgumentException();
+            }
+        }
+
+        public async Task ResetAndUpdateUserPassword(int id, String password)
+        {
+            try
+            {
+                var user = await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+
+                user.Password = CryptoHelper.GetMD5Hash(password);
+
+                await _applicationDbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

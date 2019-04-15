@@ -46,8 +46,9 @@ namespace Artour.BLL.Services
             var message = new MailMessage(new MailAddress(_configuration.Login, "Artour"), new MailAddress(userViewModel.Email));
             String fullPath = System.Reflection.Assembly.GetAssembly(GetType()).Location;
             String currentDirectory = Path.GetDirectoryName(fullPath);
+            var completeLink = String.Format(_configuration.EmailVerificationLinkTemplate, verificationLink);
 
-            message.Body = await ReadMailTemplate(EmailTemplateNames.EMAIL_CONFIRMATION, userViewModel.Username, verificationLink);
+            message.Body = await ReadMailTemplate(EmailTemplateNames.EMAIL_CONFIRMATION, userViewModel.Username, completeLink);
             message.Subject = EMAIL_CONFIRMATION_SUBJECT;
             message.IsBodyHtml = true;
 

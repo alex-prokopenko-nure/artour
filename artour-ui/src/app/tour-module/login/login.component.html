@@ -1,3 +1,39 @@
-<p>
-  login works!
-</p>
+<div class="container">
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title style="text-align: center;">Sign in to manage your tours and share your experience</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form *ngIf="!resetMode" [formGroup]="loginFormGroup">
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Email or AR Tour username" formControlName="login" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Password" formControlName="password" required>
+        </mat-form-field>
+      </div>
+      <div class="remember-me">
+        <mat-checkbox formControlName="remember">Remember me</mat-checkbox>
+      </div>
+    </form>
+    <div *ngIf="resetMode">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Email" [(ngModel)]="resetEmail">
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button *ngIf="!resetMode" mat-raised-button color="primary" (click)="login()">Sign in</button>
+    <button *ngIf="resetMode" mat-raised-button color="primary" (click)="resetPassword()">Send reset link</button>
+    <div class="forgot-password">
+      <a (click)="toggleResetPassword()">
+        <span *ngIf="!resetMode">Forgot password?</span>
+        <span *ngIf="resetMode">Back to login</span>
+      </a>
+    </div>
+  </mat-card-actions>
+</mat-card>
+</div>

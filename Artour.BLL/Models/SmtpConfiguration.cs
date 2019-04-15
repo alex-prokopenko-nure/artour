@@ -11,6 +11,7 @@ namespace Artour.BLL.Models
         public String Login { get; set; }
         public String Password { get; set; }
         public String EmailTemplateFolder { get; set; }
+        public String EmailVerificationLinkTemplate { get; set; }
     }
 
 }

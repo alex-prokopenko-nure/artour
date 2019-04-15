@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ArtourApiService, LoginViewModel, UserViewModel, RegisterViewModel } from './artour.api.service';
+import { ArtourApiService, LoginViewModel, UserViewModel, RegisterViewModel, UserViewModelProfileType } from './artour.api.service';
 import { Router } from '@angular/router';
 import * as jwt_decode from 'jwt-decode';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
@@ -11,7 +11,16 @@ export class AuthService {
     currentUserId: number;
     user: UserViewModel;
     constructor (private _artourApiService: ArtourApiService, private router: Router) {
+      if (this.signedIn()) {
+        this.getInfo();
+      }
+    }
 
+    adminOrCustomer = () => {
+        if (!this.signedIn() || !this.user) {
+            return false;
+        }
+        return (this.user.profileType == UserViewModelProfileType._2) || (this.user.profileType == UserViewModelProfileType._3);
     }
 
     login = async (loginModel: LoginViewModel) => {

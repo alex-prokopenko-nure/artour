@@ -11,6 +11,8 @@ import { Observable, throwError as _observableThrow, of as _observableOf } from 
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
+import * as moment from 'moment';
+
 export const ARTOUR_API_BASE_URL = new InjectionToken<string>('ARTOUR_API_BASE_URL');
 
 @Injectable()
@@ -1347,6 +1349,110 @@ export class ArtourApiService {
     }
 
     /**
+     * @param email (optional) 
+     * @return Success
+     */
+    sendConfirmationEmail(email: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/users/send-confirmation-email";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(email);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSendConfirmationEmail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSendConfirmationEmail(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSendConfirmationEmail(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param model (optional) 
+     * @return Success
+     */
+    resetAndChangePassword(model: ResetPasswordViewModel | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/users/reset-and-change-password";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResetAndChangePassword(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResetAndChangePassword(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processResetAndChangePassword(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
      * @param passwordViewModel (optional) 
      * @return Success
      */
@@ -1569,7 +1675,7 @@ export class ArtourApiService {
 export class SightImageViewModel implements ISightImageViewModel {
     sightImageId?: number | undefined;
     description?: string | undefined;
-    uploadedOn?: Date | undefined;
+    uploadedOn?: moment.Moment | undefined;
     fileSize?: number | undefined;
     fullFilename?: string | undefined;
     order?: number | undefined;
@@ -1588,7 +1694,7 @@ export class SightImageViewModel implements ISightImageViewModel {
         if (data) {
             this.sightImageId = data["sightImageId"];
             this.description = data["description"];
-            this.uploadedOn = data["uploadedOn"] ? new Date(data["uploadedOn"].toString()) : <any>undefined;
+            this.uploadedOn = data["uploadedOn"] ? moment(data["uploadedOn"].toString()) : <any>undefined;
             this.fileSize = data["fileSize"];
             this.fullFilename = data["fullFilename"];
             this.order = data["order"];
@@ -1619,7 +1725,7 @@ export class SightImageViewModel implements ISightImageViewModel {
 export interface ISightImageViewModel {
     sightImageId?: number | undefined;
     description?: string | undefined;
-    uploadedOn?: Date | undefined;
+    uploadedOn?: moment.Moment | undefined;
     fileSize?: number | undefined;
     fullFilename?: string | undefined;
     order?: number | undefined;
@@ -1700,7 +1806,7 @@ export interface ISightViewModel {
 
 export class SightSeenViewModel implements ISightSeenViewModel {
     visitId?: string | undefined;
-    dateSeen?: Date | undefined;
+    dateSeen?: moment.Moment | undefined;
     sightSeenId?: number | undefined;
     sightId?: number | undefined;
 
@@ -1716,7 +1822,7 @@ export class SightSeenViewModel implements ISightSeenViewModel {
     init(data?: any) {
         if (data) {
             this.visitId = data["visitId"];
-            this.dateSeen = data["dateSeen"] ? new Date(data["dateSeen"].toString()) : <any>undefined;
+            this.dateSeen = data["dateSeen"] ? moment(data["dateSeen"].toString()) : <any>undefined;
             this.sightSeenId = data["sightSeenId"];
             this.sightId = data["sightId"];
         }
@@ -1741,7 +1847,7 @@ export class SightSeenViewModel implements ISightSeenViewModel {
 
 export interface ISightSeenViewModel {
     visitId?: string | undefined;
-    dateSeen?: Date | undefined;
+    dateSeen?: moment.Moment | undefined;
     sightSeenId?: number | undefined;
     sightId?: number | undefined;
 }
@@ -1954,8 +2060,8 @@ export class VisitViewModel implements IVisitViewModel {
     visitId?: string | undefined;
     userId?: number | undefined;
     tourId?: number | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
     user?: UserViewModel | undefined;
     tour?: TourViewModel | undefined;
     sightSeens?: SightSeenViewModel[] | undefined;
@@ -1974,8 +2080,8 @@ export class VisitViewModel implements IVisitViewModel {
             this.visitId = data["visitId"];
             this.userId = data["userId"];
             this.tourId = data["tourId"];
-            this.startDate = data["startDate"] ? new Date(data["startDate"].toString()) : <any>undefined;
-            this.endDate = data["endDate"] ? new Date(data["endDate"].toString()) : <any>undefined;
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.user = data["user"] ? UserViewModel.fromJS(data["user"]) : <any>undefined;
             this.tour = data["tour"] ? TourViewModel.fromJS(data["tour"]) : <any>undefined;
             if (data["sightSeens"] && data["sightSeens"].constructor === Array) {
@@ -2015,8 +2121,8 @@ export interface IVisitViewModel {
     visitId?: string | undefined;
     userId?: number | undefined;
     tourId?: number | undefined;
-    startDate?: Date | undefined;
-    endDate?: Date | undefined;
+    startDate?: moment.Moment | undefined;
+    endDate?: moment.Moment | undefined;
     user?: UserViewModel | undefined;
     tour?: TourViewModel | undefined;
     sightSeens?: SightSeenViewModel[] | undefined;
@@ -2092,7 +2198,8 @@ export class UserViewModel implements IUserViewModel {
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    dateOfBirth?: Date | undefined;
+    profileType?: UserViewModelProfileType | undefined;
+    dateOfBirth?: moment.Moment | undefined;
 
     constructor(data?: IUserViewModel) {
         if (data) {
@@ -2110,7 +2217,8 @@ export class UserViewModel implements IUserViewModel {
             this.email = data["email"];
             this.firstName = data["firstName"];
             this.lastName = data["lastName"];
-            this.dateOfBirth = data["dateOfBirth"] ? new Date(data["dateOfBirth"].toString()) : <any>undefined;
+            this.profileType = data["profileType"];
+            this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
         }
     }
 
@@ -2128,6 +2236,7 @@ export class UserViewModel implements IUserViewModel {
         data["email"] = this.email;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
+        data["profileType"] = this.profileType;
         data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
         return data; 
     }
@@ -2139,7 +2248,8 @@ export interface IUserViewModel {
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    dateOfBirth?: Date | undefined;
+    profileType?: UserViewModelProfileType | undefined;
+    dateOfBirth?: moment.Moment | undefined;
 }
 
 export class RegionViewModel implements IRegionViewModel {
@@ -2301,7 +2411,8 @@ export class RegisterViewModel implements IRegisterViewModel {
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    dateOfBirth?: Date | undefined;
+    profileType?: RegisterViewModelProfileType | undefined;
+    dateOfBirth?: moment.Moment | undefined;
 
     constructor(data?: IRegisterViewModel) {
         if (data) {
@@ -2320,7 +2431,8 @@ export class RegisterViewModel implements IRegisterViewModel {
             this.email = data["email"];
             this.firstName = data["firstName"];
             this.lastName = data["lastName"];
-            this.dateOfBirth = data["dateOfBirth"] ? new Date(data["dateOfBirth"].toString()) : <any>undefined;
+            this.profileType = data["profileType"];
+            this.dateOfBirth = data["dateOfBirth"] ? moment(data["dateOfBirth"].toString()) : <any>undefined;
         }
     }
 
@@ -2339,6 +2451,7 @@ export class RegisterViewModel implements IRegisterViewModel {
         data["email"] = this.email;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
+        data["profileType"] = this.profileType;
         data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
         return data; 
     }
@@ -2351,7 +2464,48 @@ export interface IRegisterViewModel {
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    dateOfBirth?: Date | undefined;
+    profileType?: RegisterViewModelProfileType | undefined;
+    dateOfBirth?: moment.Moment | undefined;
+}
+
+export class ResetPasswordViewModel implements IResetPasswordViewModel {
+    token?: string | undefined;
+    password?: string | undefined;
+
+    constructor(data?: IResetPasswordViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.token = data["token"];
+            this.password = data["password"];
+        }
+    }
+
+    static fromJS(data: any): ResetPasswordViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResetPasswordViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["token"] = this.token;
+        data["password"] = this.password;
+        return data; 
+    }
+}
+
+export interface IResetPasswordViewModel {
+    token?: string | undefined;
+    password?: string | undefined;
 }
 
 export class ChangePasswordViewModel implements IChangePasswordViewModel {
@@ -2392,6 +2546,18 @@ export class ChangePasswordViewModel implements IChangePasswordViewModel {
 export interface IChangePasswordViewModel {
     oldPassword?: string | undefined;
     newPassword?: string | undefined;
+}
+
+export enum UserViewModelProfileType {
+    _1 = 1, 
+    _2 = 2, 
+    _3 = 3, 
+}
+
+export enum RegisterViewModelProfileType {
+    _1 = 1, 
+    _2 = 2, 
+    _3 = 3, 
 }
 
 export interface FileParameter {

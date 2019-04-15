@@ -1,3 +1,94 @@
-<p>
-  register works!
-</p>
+<mat-vertical-stepper [linear]="isLinear" #stepper (selectionChange)="selectionChange($event)">
+  <mat-step [stepControl]="usernameFormGroup">
+    <form [formGroup]="usernameFormGroup">
+      <ng-template matStepLabel>Make up your username</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext [disabled]="!usernameFormGroup.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="infoFormGroup">
+    <form [formGroup]="infoFormGroup">
+      <ng-template matStepLabel>Enter information about you</ng-template>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Email" formControlName="email" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="First name" formControlName="firstName" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput placeholder="Last name" formControlName="lastName" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Date of birth" formControlName="dateOfBirth" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="!infoFormGroup.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="passwordFormGroup">
+    <form [formGroup]="passwordFormGroup">
+      <ng-template matStepLabel>Make up your password</ng-template>
+      <div class="note"> 
+        Password can include only latin symbols, numbers and special characters (6-21 characters length)
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Password" formControlName="password" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Confirm your password" formControlName="confirmedPassword" required>
+        </mat-form-field>
+      </div>
+      <div *ngIf="passwordFormGroup.controls.confirmedPassword.dirty && passwordFormGroup.errors?.differentPasswords && passwordFormGroup.invalid" class="error">
+        Passwords do not match
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="!passwordFormGroup.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Confirmation</ng-template>
+    <mat-card class="card">
+      <mat-card-header>
+        <div mat-card-avatar class="header-image"></div>
+        <mat-card-title>{{userModel.username}}</mat-card-title>
+        <mat-card-subtitle>{{userModel.email}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Name: {{userModel.firstName}} {{userModel.lastName}}
+        </p>
+        <p>
+          Date of birth: {{dateOfBirth}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="register()">Sign Up</button>
+    </div>
+    <div class="error" *ngIf="showError">
+      This username is already taken
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

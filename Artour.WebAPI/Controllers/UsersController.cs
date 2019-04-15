@@ -80,6 +80,29 @@ namespace Artour.WebAPI.Controllers
             return NoContent();
         }
 
+        [HttpPut("reset-and-change-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetAndChangePassword([FromBody]ResetPasswordViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var userId = _usersService.ParseJwtToken(model.Token);
+
+                await _usersService.ResetAndUpdateUserPassword(userId, model.Password);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
         [Authorize]
         [HttpPut("{userId}/change-password")]
         public async Task<ActionResult<UserViewModel>> ChangePassword(Int32 userId, [FromBody]ChangePasswordViewModel passwordViewModel)

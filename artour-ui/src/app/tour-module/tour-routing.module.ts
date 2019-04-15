@@ -5,6 +5,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ManageComponent } from './manage/manage.component';
+import { UnauthGuardService } from './http-helpers/unauth.guard.service';
+import { AuthGuardService } from './http-helpers/auth.guard.service';
+import { CustomerGuardService } from './http-helpers/customer.guard.service';
 
 const routes: Routes = [
   {
@@ -13,19 +16,23 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [UnauthGuardService]
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [UnauthGuardService]
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'manage',
-    component: ManageComponent
+    component: ManageComponent,
+    canActivate: [CustomerGuardService]
   },
   { path: "**", redirectTo: "home" }
 ];

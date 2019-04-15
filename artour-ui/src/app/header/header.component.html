@@ -1,12 +1,13 @@
-<mat-toolbar role="heading" color="basic">
+<mat-toolbar role="heading" color="primary">
   <span>AR Tour</span>
 
   <!-- This fills the remaining space of the current row -->
   <span class="example-fill-remaining-space"></span>
 
   <button mat-button class="nav-action" (click)="navigate('home')">Home</button>
-  <button mat-button class="nav-action" (click)="navigate('manage')">Tours</button>
-  <button mat-button class="nav-action" (click)="navigate('profile')">Profile</button>
-  <button mat-button class="nav-action" (click)="navigate('login')">Sign In</button>
-  <button mat-button class="nav-action" (click)="navigate('register')">Sign Up</button>
+  <button mat-button class="nav-action" (click)="navigate('manage')" *ngIf="adminOrCustomer()">Tours</button>
+  <button mat-button class="nav-action" (click)="navigate('profile')" *ngIf="signedIn()">Profile</button>
+  <button mat-button class="nav-action" (click)="navigate('login')" *ngIf="!signedIn()">Sign In</button>
+  <button mat-button class="nav-action" (click)="navigate('register')" *ngIf="!signedIn()">Sign Up</button>
+  <button mat-button class="nav-action" (click)="logout()" *ngIf="signedIn()">Sign Out</button>
 </mat-toolbar>
