@@ -1,3 +1,38 @@
-<p>
-  home works!
-</p>
+<mat-toolbar>
+  <span>All Tours</span>
+  <span style="flex: 1 1 auto"></span>
+  <span>Order by:</span>
+  <mat-form-field>
+    <mat-select [(ngModel)]="orderType" (selectionChange)="filter()">
+      <mat-option [value]="Order.Visits">
+        Visits
+      </mat-option>
+      <mat-option [value]="Order.Title">
+        Title
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  Search:
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="searchWord" (ngModelChange)="filter()">
+  </mat-form-field>
+  <button mat-button class="lol" *ngIf="adminOrCustomer()">My Tours</button>
+</mat-toolbar>
+<mat-list>
+  <mat-card class="card" *ngFor="let tour of toursToShow">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{tour.title}}</mat-card-title>
+      <mat-card-subtitle>{{getCity(tour.cityId)}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{getTourImage(tour)}}" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p>
+        {{tour.description}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center">
+      <button mat-raised-button>Watch</button>
+    </mat-card-actions>
+  </mat-card>
+</mat-list>

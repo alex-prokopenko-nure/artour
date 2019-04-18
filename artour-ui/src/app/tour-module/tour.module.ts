@@ -43,6 +43,9 @@ import {
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MailService } from './services/mail.service';
 import { UserService } from './services/user.service';
+import { TourService } from './services/tour.service';
+import { LocationsService } from './services/locations.service';
+import { FileService } from './services/file.service';
 
 @NgModule({
   declarations: [HomeComponent, ProfileComponent, ManageComponent, LoginComponent, RegisterComponent, SetPasswordComponent],
@@ -86,7 +89,10 @@ import { UserService } from './services/user.service';
   providers: [
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
     MailService,
-    UserService
+    UserService,
+    TourService,
+    LocationsService,
+    FileService
   ],
   entryComponents: [SetPasswordComponent]
 })

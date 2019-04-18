@@ -4,6 +4,11 @@ import { AuthService } from 'src/app/shared-module/services/auth.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SetPasswordComponent } from '../set-password/set-password.component';
 import { Action } from 'src/app/shared-module/enums/action.enum';
+import { TourService } from '../services/tour.service';
+import { TourViewModel, CityViewModel, CountryViewModel, RegionViewModel } from 'src/app/shared-module/services/artour.api.service';
+import { LocationsService } from '../services/locations.service';
+import { Order } from '../enums/order.enum';
+import { FileService } from '../services/file.service';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +16,24 @@ import { Action } from 'src/app/shared-module/enums/action.enum';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  tours: TourViewModel[] = [];
+  cities: CityViewModel[] = [];
+  countries: CountryViewModel[] = [];
+  regions: RegionViewModel[] = [];
+  orderType: Order = Order.Visits;
+  filteringValue: number;
+  searchWord: string;
+
+  toursToShow: TourViewModel[] = [];
 
   constructor(   
     private authService: AuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private tourService: TourService,
+    private fileService: FileService
     ) { }
 
   ngOnInit() {
@@ -33,10 +49,60 @@ export class HomeComponent implements OnInit {
         });
       }
     });
+
+    this.tourService.getAllTours().subscribe(result => {
+      this.tours = result;
+      for (let i = 0; i < result.length; ++i) {
+        let city = result[i].city;
+        if (this.cities.findIndex(x => x.cityId == city.cityId) == -1) this.cities.push(city);
+      }
+      this.filter();
+    });
+  }
+
+  get Order() {
+    return Order;
   }
 
   showCongratulations = () => {
     this.snackBar.open("Password changed successfully", "Close", {duration: 5000});
   }
 
+  filter = () => {
+    let filteredTours = this.tours;
+    filteredTours = filteredTours.sort((a, b) => {
+      if (this.orderType == Order.Visits) {
+        let avisits = a.visits ? a.visits.length : 0;
+        let bvisits = b.visits ? b.visits.length : 0;
+        return bvisits - avisits;
+      } else {
+        return a.title < b.title ? 1 : a.title > b.title ? -1 : 0;
+      }
+    });
+    if (this.searchWord) {
+      filteredTours = filteredTours.filter(x => x.title.search(new RegExp(this.searchWord, "i")) != -1 || this.getCity(x.cityId).search(new RegExp(this.searchWord, "i")) != -1)
+    }
+    this.toursToShow = filteredTours;
+  }
+
+  filteringTypeChanged = () => {
+    this.filteringValue = undefined;
+    this.filter();
+  }
+
+  getCity = (cityId: number) => {
+    return this.cities.find(x => x.cityId == cityId).name
+  }
+
+  getTourImage = (tour: TourViewModel) => {
+    if (tour.sights && tour.sights.length > 0 &&
+      tour.sights[0].images && tour.sights[0].images.length > 0) {
+      return this.fileService.getSightImageData(tour.sights[0].images[0].sightImageId);
+    }
+    return "../../../assets/images/noimage.png"
+  }
+
+  adminOrCustomer = () => {
+    return this.authService.adminOrCustomer();
+  }
 }

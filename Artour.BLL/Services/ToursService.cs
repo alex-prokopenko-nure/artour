@@ -41,9 +41,19 @@ namespace Artour.BLL.Services
             var result = await _applicationDbContext.Tours
                 .Include(x => x.City)
                 .Include(x => x.Comments)
+                .Include(x => x.Visits)
                 .Include(x => x.Sights)
                 .ThenInclude(x => x.Images)
                 .ToListAsync();
+
+            foreach (var tour in result)
+            {
+                tour.City.Tours = null;
+                foreach (var visit in tour.Visits)
+                {
+                    visit.Tour = null;
+                }
+            }
 
             return _mapper.Map<IEnumerable<TourViewModel>>(result);
         }
@@ -53,9 +63,16 @@ namespace Artour.BLL.Services
             var result = await _applicationDbContext.Tours
                 .Include(x => x.City)
                 .Include(x => x.Comments)
+                .Include(x => x.Visits)
                 .Include(x => x.Sights)
                 .ThenInclude(x => x.Images)
                 .FirstOrDefaultAsync(x => x.TourId == tourId);
+
+            result.City.Tours = null;
+            foreach (var visit in result.Visits)
+            {
+                visit.Tour = null;
+            }
 
             return _mapper.Map<TourViewModel>(result);
         }
@@ -65,10 +82,20 @@ namespace Artour.BLL.Services
             var result = await _applicationDbContext.Tours
                 .Include(x => x.City)
                 .Include(x => x.Comments)
+                .Include(x => x.Visits)
                 .Include(x => x.Sights)
                 .ThenInclude(x => x.Images)
                 .Where(x => x.OwnerId == userId)
                 .ToListAsync();
+
+            foreach (var tour in result)
+            {
+                tour.City.Tours = null;
+                foreach (var visit in tour.Visits)
+                {
+                    visit.Tour = null;
+                }
+            }
 
             return _mapper.Map<IEnumerable<TourViewModel>>(result);
         }

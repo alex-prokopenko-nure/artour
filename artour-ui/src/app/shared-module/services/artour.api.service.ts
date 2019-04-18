@@ -29,6 +29,171 @@ export class ArtourApiService {
     /**
      * @return Success
      */
+    getAllCities(): Observable<CityViewModel[]> {
+        let url_ = this.baseUrl + "/api/locations/cities";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllCities(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCities(<any>response_);
+                } catch (e) {
+                    return <Observable<CityViewModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CityViewModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllCities(response: HttpResponseBase): Observable<CityViewModel[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CityViewModel.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CityViewModel[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllCountries(): Observable<CountryViewModel[]> {
+        let url_ = this.baseUrl + "/api/locations/countries";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllCountries(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCountries(<any>response_);
+                } catch (e) {
+                    return <Observable<CountryViewModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CountryViewModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllCountries(response: HttpResponseBase): Observable<CountryViewModel[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CountryViewModel.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CountryViewModel[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllRegions(): Observable<RegionViewModel[]> {
+        let url_ = this.baseUrl + "/api/locations/regions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllRegions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllRegions(<any>response_);
+                } catch (e) {
+                    return <Observable<RegionViewModel[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<RegionViewModel[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllRegions(response: HttpResponseBase): Observable<RegionViewModel[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(RegionViewModel.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<RegionViewModel[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getImageById(id: number): Observable<SightImageViewModel> {
         let url_ = this.baseUrl + "/api/sight-images/{id}";
         if (id === undefined || id === null)
@@ -1672,16 +1837,14 @@ export class ArtourApiService {
     }
 }
 
-export class SightImageViewModel implements ISightImageViewModel {
-    sightImageId?: number | undefined;
-    description?: string | undefined;
-    uploadedOn?: moment.Moment | undefined;
-    fileSize?: number | undefined;
-    fullFilename?: string | undefined;
-    order?: number | undefined;
-    sightId?: number | undefined;
+export class CityViewModel implements ICityViewModel {
+    cityId?: number | undefined;
+    name?: string | undefined;
+    countryId?: number | undefined;
+    country?: CountryViewModel | undefined;
+    tours?: TourViewModel[] | undefined;
 
-    constructor(data?: ISightImageViewModel) {
+    constructor(data?: ICityViewModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1692,55 +1855,57 @@ export class SightImageViewModel implements ISightImageViewModel {
 
     init(data?: any) {
         if (data) {
-            this.sightImageId = data["sightImageId"];
-            this.description = data["description"];
-            this.uploadedOn = data["uploadedOn"] ? moment(data["uploadedOn"].toString()) : <any>undefined;
-            this.fileSize = data["fileSize"];
-            this.fullFilename = data["fullFilename"];
-            this.order = data["order"];
-            this.sightId = data["sightId"];
+            this.cityId = data["cityId"];
+            this.name = data["name"];
+            this.countryId = data["countryId"];
+            this.country = data["country"] ? CountryViewModel.fromJS(data["country"]) : <any>undefined;
+            if (data["tours"] && data["tours"].constructor === Array) {
+                this.tours = [];
+                for (let item of data["tours"])
+                    this.tours.push(TourViewModel.fromJS(item));
+            }
         }
     }
 
-    static fromJS(data: any): SightImageViewModel {
+    static fromJS(data: any): CityViewModel {
         data = typeof data === 'object' ? data : {};
-        let result = new SightImageViewModel();
+        let result = new CityViewModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["sightImageId"] = this.sightImageId;
-        data["description"] = this.description;
-        data["uploadedOn"] = this.uploadedOn ? this.uploadedOn.toISOString() : <any>undefined;
-        data["fileSize"] = this.fileSize;
-        data["fullFilename"] = this.fullFilename;
-        data["order"] = this.order;
-        data["sightId"] = this.sightId;
+        data["cityId"] = this.cityId;
+        data["name"] = this.name;
+        data["countryId"] = this.countryId;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        if (this.tours && this.tours.constructor === Array) {
+            data["tours"] = [];
+            for (let item of this.tours)
+                data["tours"].push(item.toJSON());
+        }
         return data; 
     }
 }
 
-export interface ISightImageViewModel {
-    sightImageId?: number | undefined;
-    description?: string | undefined;
-    uploadedOn?: moment.Moment | undefined;
-    fileSize?: number | undefined;
-    fullFilename?: string | undefined;
-    order?: number | undefined;
-    sightId?: number | undefined;
+export interface ICityViewModel {
+    cityId?: number | undefined;
+    name?: string | undefined;
+    countryId?: number | undefined;
+    country?: CountryViewModel | undefined;
+    tours?: TourViewModel[] | undefined;
 }
 
-export class SightViewModel implements ISightViewModel {
-    sightId?: number | undefined;
-    tourId?: number | undefined;
-    title?: string | undefined;
-    description?: string | undefined;
-    images?: SightImageViewModel[] | undefined;
-    sightSeens?: SightSeenViewModel[] | undefined;
+export class CountryViewModel implements ICountryViewModel {
+    countryId?: number | undefined;
+    name?: string | undefined;
+    code?: string | undefined;
+    regionId?: number | undefined;
+    region?: RegionViewModel | undefined;
+    cities?: CityViewModel[] | undefined;
 
-    constructor(data?: ISightViewModel) {
+    constructor(data?: ICountryViewModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1751,105 +1916,49 @@ export class SightViewModel implements ISightViewModel {
 
     init(data?: any) {
         if (data) {
-            this.sightId = data["sightId"];
-            this.tourId = data["tourId"];
-            this.title = data["title"];
-            this.description = data["description"];
-            if (data["images"] && data["images"].constructor === Array) {
-                this.images = [];
-                for (let item of data["images"])
-                    this.images.push(SightImageViewModel.fromJS(item));
-            }
-            if (data["sightSeens"] && data["sightSeens"].constructor === Array) {
-                this.sightSeens = [];
-                for (let item of data["sightSeens"])
-                    this.sightSeens.push(SightSeenViewModel.fromJS(item));
+            this.countryId = data["countryId"];
+            this.name = data["name"];
+            this.code = data["code"];
+            this.regionId = data["regionId"];
+            this.region = data["region"] ? RegionViewModel.fromJS(data["region"]) : <any>undefined;
+            if (data["cities"] && data["cities"].constructor === Array) {
+                this.cities = [];
+                for (let item of data["cities"])
+                    this.cities.push(CityViewModel.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): SightViewModel {
+    static fromJS(data: any): CountryViewModel {
         data = typeof data === 'object' ? data : {};
-        let result = new SightViewModel();
+        let result = new CountryViewModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["sightId"] = this.sightId;
-        data["tourId"] = this.tourId;
-        data["title"] = this.title;
-        data["description"] = this.description;
-        if (this.images && this.images.constructor === Array) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item.toJSON());
-        }
-        if (this.sightSeens && this.sightSeens.constructor === Array) {
-            data["sightSeens"] = [];
-            for (let item of this.sightSeens)
-                data["sightSeens"].push(item.toJSON());
+        data["countryId"] = this.countryId;
+        data["name"] = this.name;
+        data["code"] = this.code;
+        data["regionId"] = this.regionId;
+        data["region"] = this.region ? this.region.toJSON() : <any>undefined;
+        if (this.cities && this.cities.constructor === Array) {
+            data["cities"] = [];
+            for (let item of this.cities)
+                data["cities"].push(item.toJSON());
         }
         return data; 
     }
 }
 
-export interface ISightViewModel {
-    sightId?: number | undefined;
-    tourId?: number | undefined;
-    title?: string | undefined;
-    description?: string | undefined;
-    images?: SightImageViewModel[] | undefined;
-    sightSeens?: SightSeenViewModel[] | undefined;
-}
-
-export class SightSeenViewModel implements ISightSeenViewModel {
-    visitId?: string | undefined;
-    dateSeen?: moment.Moment | undefined;
-    sightSeenId?: number | undefined;
-    sightId?: number | undefined;
-
-    constructor(data?: ISightSeenViewModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.visitId = data["visitId"];
-            this.dateSeen = data["dateSeen"] ? moment(data["dateSeen"].toString()) : <any>undefined;
-            this.sightSeenId = data["sightSeenId"];
-            this.sightId = data["sightId"];
-        }
-    }
-
-    static fromJS(data: any): SightSeenViewModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new SightSeenViewModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["visitId"] = this.visitId;
-        data["dateSeen"] = this.dateSeen ? this.dateSeen.toISOString() : <any>undefined;
-        data["sightSeenId"] = this.sightSeenId;
-        data["sightId"] = this.sightId;
-        return data; 
-    }
-}
-
-export interface ISightSeenViewModel {
-    visitId?: string | undefined;
-    dateSeen?: moment.Moment | undefined;
-    sightSeenId?: number | undefined;
-    sightId?: number | undefined;
+export interface ICountryViewModel {
+    countryId?: number | undefined;
+    name?: string | undefined;
+    code?: string | undefined;
+    regionId?: number | undefined;
+    region?: RegionViewModel | undefined;
+    cities?: CityViewModel[] | undefined;
 }
 
 export class TourViewModel implements ITourViewModel {
@@ -1944,14 +2053,12 @@ export interface ITourViewModel {
     visits?: VisitViewModel[] | undefined;
 }
 
-export class CityViewModel implements ICityViewModel {
-    cityId?: number | undefined;
+export class RegionViewModel implements IRegionViewModel {
+    regionId?: number | undefined;
     name?: string | undefined;
-    countryId?: number | undefined;
-    country?: CountryViewModel | undefined;
-    tours?: TourViewModel[] | undefined;
+    countries?: CountryViewModel[] | undefined;
 
-    constructor(data?: ICityViewModel) {
+    constructor(data?: IRegionViewModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1962,46 +2069,40 @@ export class CityViewModel implements ICityViewModel {
 
     init(data?: any) {
         if (data) {
-            this.cityId = data["cityId"];
+            this.regionId = data["regionId"];
             this.name = data["name"];
-            this.countryId = data["countryId"];
-            this.country = data["country"] ? CountryViewModel.fromJS(data["country"]) : <any>undefined;
-            if (data["tours"] && data["tours"].constructor === Array) {
-                this.tours = [];
-                for (let item of data["tours"])
-                    this.tours.push(TourViewModel.fromJS(item));
+            if (data["countries"] && data["countries"].constructor === Array) {
+                this.countries = [];
+                for (let item of data["countries"])
+                    this.countries.push(CountryViewModel.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): CityViewModel {
+    static fromJS(data: any): RegionViewModel {
         data = typeof data === 'object' ? data : {};
-        let result = new CityViewModel();
+        let result = new RegionViewModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["cityId"] = this.cityId;
+        data["regionId"] = this.regionId;
         data["name"] = this.name;
-        data["countryId"] = this.countryId;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
-        if (this.tours && this.tours.constructor === Array) {
-            data["tours"] = [];
-            for (let item of this.tours)
-                data["tours"].push(item.toJSON());
+        if (this.countries && this.countries.constructor === Array) {
+            data["countries"] = [];
+            for (let item of this.countries)
+                data["countries"].push(item.toJSON());
         }
         return data; 
     }
 }
 
-export interface ICityViewModel {
-    cityId?: number | undefined;
+export interface IRegionViewModel {
+    regionId?: number | undefined;
     name?: string | undefined;
-    countryId?: number | undefined;
-    country?: CountryViewModel | undefined;
-    tours?: TourViewModel[] | undefined;
+    countries?: CountryViewModel[] | undefined;
 }
 
 export class CommentViewModel implements ICommentViewModel {
@@ -2054,6 +2155,78 @@ export interface ICommentViewModel {
     tourId?: number | undefined;
     mark?: number | undefined;
     text?: string | undefined;
+}
+
+export class SightViewModel implements ISightViewModel {
+    sightId?: number | undefined;
+    tourId?: number | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    images?: SightImageViewModel[] | undefined;
+    sightSeens?: SightSeenViewModel[] | undefined;
+
+    constructor(data?: ISightViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.sightId = data["sightId"];
+            this.tourId = data["tourId"];
+            this.title = data["title"];
+            this.description = data["description"];
+            if (data["images"] && data["images"].constructor === Array) {
+                this.images = [];
+                for (let item of data["images"])
+                    this.images.push(SightImageViewModel.fromJS(item));
+            }
+            if (data["sightSeens"] && data["sightSeens"].constructor === Array) {
+                this.sightSeens = [];
+                for (let item of data["sightSeens"])
+                    this.sightSeens.push(SightSeenViewModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SightViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new SightViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["sightId"] = this.sightId;
+        data["tourId"] = this.tourId;
+        data["title"] = this.title;
+        data["description"] = this.description;
+        if (this.images && this.images.constructor === Array) {
+            data["images"] = [];
+            for (let item of this.images)
+                data["images"].push(item.toJSON());
+        }
+        if (this.sightSeens && this.sightSeens.constructor === Array) {
+            data["sightSeens"] = [];
+            for (let item of this.sightSeens)
+                data["sightSeens"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISightViewModel {
+    sightId?: number | undefined;
+    tourId?: number | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    images?: SightImageViewModel[] | undefined;
+    sightSeens?: SightSeenViewModel[] | undefined;
 }
 
 export class VisitViewModel implements IVisitViewModel {
@@ -2128,15 +2301,16 @@ export interface IVisitViewModel {
     sightSeens?: SightSeenViewModel[] | undefined;
 }
 
-export class CountryViewModel implements ICountryViewModel {
-    countryId?: number | undefined;
-    name?: string | undefined;
-    code?: string | undefined;
-    regionId?: number | undefined;
-    region?: RegionViewModel | undefined;
-    cities?: CityViewModel[] | undefined;
+export class SightImageViewModel implements ISightImageViewModel {
+    sightImageId?: number | undefined;
+    description?: string | undefined;
+    uploadedOn?: moment.Moment | undefined;
+    fileSize?: number | undefined;
+    fullFilename?: string | undefined;
+    order?: number | undefined;
+    sightId?: number | undefined;
 
-    constructor(data?: ICountryViewModel) {
+    constructor(data?: ISightImageViewModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2147,49 +2321,92 @@ export class CountryViewModel implements ICountryViewModel {
 
     init(data?: any) {
         if (data) {
-            this.countryId = data["countryId"];
-            this.name = data["name"];
-            this.code = data["code"];
-            this.regionId = data["regionId"];
-            this.region = data["region"] ? RegionViewModel.fromJS(data["region"]) : <any>undefined;
-            if (data["cities"] && data["cities"].constructor === Array) {
-                this.cities = [];
-                for (let item of data["cities"])
-                    this.cities.push(CityViewModel.fromJS(item));
-            }
+            this.sightImageId = data["sightImageId"];
+            this.description = data["description"];
+            this.uploadedOn = data["uploadedOn"] ? moment(data["uploadedOn"].toString()) : <any>undefined;
+            this.fileSize = data["fileSize"];
+            this.fullFilename = data["fullFilename"];
+            this.order = data["order"];
+            this.sightId = data["sightId"];
         }
     }
 
-    static fromJS(data: any): CountryViewModel {
+    static fromJS(data: any): SightImageViewModel {
         data = typeof data === 'object' ? data : {};
-        let result = new CountryViewModel();
+        let result = new SightImageViewModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["countryId"] = this.countryId;
-        data["name"] = this.name;
-        data["code"] = this.code;
-        data["regionId"] = this.regionId;
-        data["region"] = this.region ? this.region.toJSON() : <any>undefined;
-        if (this.cities && this.cities.constructor === Array) {
-            data["cities"] = [];
-            for (let item of this.cities)
-                data["cities"].push(item.toJSON());
-        }
+        data["sightImageId"] = this.sightImageId;
+        data["description"] = this.description;
+        data["uploadedOn"] = this.uploadedOn ? this.uploadedOn.toISOString() : <any>undefined;
+        data["fileSize"] = this.fileSize;
+        data["fullFilename"] = this.fullFilename;
+        data["order"] = this.order;
+        data["sightId"] = this.sightId;
         return data; 
     }
 }
 
-export interface ICountryViewModel {
-    countryId?: number | undefined;
-    name?: string | undefined;
-    code?: string | undefined;
-    regionId?: number | undefined;
-    region?: RegionViewModel | undefined;
-    cities?: CityViewModel[] | undefined;
+export interface ISightImageViewModel {
+    sightImageId?: number | undefined;
+    description?: string | undefined;
+    uploadedOn?: moment.Moment | undefined;
+    fileSize?: number | undefined;
+    fullFilename?: string | undefined;
+    order?: number | undefined;
+    sightId?: number | undefined;
+}
+
+export class SightSeenViewModel implements ISightSeenViewModel {
+    visitId?: string | undefined;
+    dateSeen?: moment.Moment | undefined;
+    sightSeenId?: number | undefined;
+    sightId?: number | undefined;
+
+    constructor(data?: ISightSeenViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.visitId = data["visitId"];
+            this.dateSeen = data["dateSeen"] ? moment(data["dateSeen"].toString()) : <any>undefined;
+            this.sightSeenId = data["sightSeenId"];
+            this.sightId = data["sightId"];
+        }
+    }
+
+    static fromJS(data: any): SightSeenViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new SightSeenViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["visitId"] = this.visitId;
+        data["dateSeen"] = this.dateSeen ? this.dateSeen.toISOString() : <any>undefined;
+        data["sightSeenId"] = this.sightSeenId;
+        data["sightId"] = this.sightId;
+        return data; 
+    }
+}
+
+export interface ISightSeenViewModel {
+    visitId?: string | undefined;
+    dateSeen?: moment.Moment | undefined;
+    sightSeenId?: number | undefined;
+    sightId?: number | undefined;
 }
 
 export class UserViewModel implements IUserViewModel {
@@ -2250,58 +2467,6 @@ export interface IUserViewModel {
     lastName?: string | undefined;
     profileType?: UserViewModelProfileType | undefined;
     dateOfBirth?: moment.Moment | undefined;
-}
-
-export class RegionViewModel implements IRegionViewModel {
-    regionId?: number | undefined;
-    name?: string | undefined;
-    countries?: CountryViewModel[] | undefined;
-
-    constructor(data?: IRegionViewModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.regionId = data["regionId"];
-            this.name = data["name"];
-            if (data["countries"] && data["countries"].constructor === Array) {
-                this.countries = [];
-                for (let item of data["countries"])
-                    this.countries.push(CountryViewModel.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): RegionViewModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegionViewModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["regionId"] = this.regionId;
-        data["name"] = this.name;
-        if (this.countries && this.countries.constructor === Array) {
-            data["countries"] = [];
-            for (let item of this.countries)
-                data["countries"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IRegionViewModel {
-    regionId?: number | undefined;
-    name?: string | undefined;
-    countries?: CountryViewModel[] | undefined;
 }
 
 export class TourStatisticsViewModel implements ITourStatisticsViewModel {
