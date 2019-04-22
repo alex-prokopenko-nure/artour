@@ -1,0 +1,41 @@
+<mat-drawer-container class="example-container">
+  <mat-drawer #drawer [mode]="over">
+    <div style="display: flex;">
+    <div>
+      <mat-list role="list">
+        <mat-list-item role="listitem">Visitis number:</mat-list-item>
+        <mat-list-item role="listitem">Users visited:</mat-list-item>
+        <mat-list-item role="listitem">Visits last week:</mat-list-item>
+        <mat-list-item role="listitem">Average tour time:</mat-list-item>
+        <mat-list-item role="listitem">Comments:</mat-list-item>
+        <mat-list-item role="listitem">Average Mark:</mat-list-item>
+      </mat-list>
+    </div>
+    <div>
+      <mat-list role="list" *ngIf="tourStatistics">
+        <mat-list-item role="listitem">{{tourStatistics.visitsNumber}}</mat-list-item>
+        <mat-list-item role="listitem">{{tourStatistics.usersVisited}}</mat-list-item>
+        <mat-list-item role="listitem">{{tourStatistics.visitsLastWeek}}</mat-list-item>
+        <mat-list-item role="listitem">{{getAverageTime(tourStatistics.averageTourTime)}}</mat-list-item>
+        <mat-list-item role="listitem">{{tourStatistics.commentsNumber}}</mat-list-item>
+        <mat-list-item role="listitem">{{tourStatistics.averageMark}}</mat-list-item>
+      </mat-list>
+    </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content *ngIf="tour">
+    <span class="title">{{tour.title}}</span>
+    <button mat-button (click)="drawer.toggle()"><< Statistics</button>
+    <div class="small-title">
+      {{tour.description}}
+    </div>
+    <div class="mid-title">
+      Tour sights:
+    </div>
+    <div class="sights-container">
+      <div *ngFor="let sight of tour.sights">
+        {{sight.title}}
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

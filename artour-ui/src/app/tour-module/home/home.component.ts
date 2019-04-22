@@ -9,6 +9,7 @@ import { TourViewModel, CityViewModel, CountryViewModel, RegionViewModel } from 
 import { LocationsService } from '../services/locations.service';
 import { Order } from '../enums/order.enum';
 import { FileService } from '../services/file.service';
+import { FilterType } from '../enums/filter.enum';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
   countries: CountryViewModel[] = [];
   regions: RegionViewModel[] = [];
   orderType: Order = Order.Visits;
-  filteringValue: number;
+  filterType: FilterType = FilterType.AllTours;
   searchWord: string;
 
   toursToShow: TourViewModel[] = [];
@@ -64,12 +65,22 @@ export class HomeComponent implements OnInit {
     return Order;
   }
 
+  get FilterType() {
+    return FilterType;
+  }
+
   showCongratulations = () => {
     this.snackBar.open("Password changed successfully", "Close", {duration: 5000});
   }
 
   filter = () => {
     let filteredTours = this.tours;
+    if (this.filterType == FilterType.MyTours) {
+      filteredTours = filteredTours.filter(x => this.usersTour(x));
+    }
+    if (this.searchWord) {
+      filteredTours = filteredTours.filter(x => x.title.search(new RegExp(this.searchWord, "i")) != -1 || this.getCity(x.cityId).search(new RegExp(this.searchWord, "i")) != -1)
+    }
     filteredTours = filteredTours.sort((a, b) => {
       if (this.orderType == Order.Visits) {
         let avisits = a.visits ? a.visits.length : 0;
@@ -79,14 +90,10 @@ export class HomeComponent implements OnInit {
         return a.title < b.title ? 1 : a.title > b.title ? -1 : 0;
       }
     });
-    if (this.searchWord) {
-      filteredTours = filteredTours.filter(x => x.title.search(new RegExp(this.searchWord, "i")) != -1 || this.getCity(x.cityId).search(new RegExp(this.searchWord, "i")) != -1)
-    }
     this.toursToShow = filteredTours;
   }
 
   filteringTypeChanged = () => {
-    this.filteringValue = undefined;
     this.filter();
   }
 
@@ -102,7 +109,19 @@ export class HomeComponent implements OnInit {
     return "../../../assets/images/noimage.png"
   }
 
-  adminOrCustomer = () => {
-    return this.authService.adminOrCustomer();
+  admin = () => {
+    return this.authService.admin();
+  }
+
+  customer = () => {
+    return this.authService.customer();
+  }
+
+  usersTour = (tour: TourViewModel) => {
+    return tour.ownerId == this.authService.currentUserId;
+  }
+
+  goToTourDetails = (tourId: number) => {
+    this.router.navigateByUrl(`tours/${tourId}`);
   }
 }

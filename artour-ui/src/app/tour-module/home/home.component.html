@@ -1,22 +1,36 @@
 <mat-toolbar>
-  <span>All Tours</span>
-  <span style="flex: 1 1 auto"></span>
-  <span>Order by:</span>
-  <mat-form-field>
-    <mat-select [(ngModel)]="orderType" (selectionChange)="filter()">
-      <mat-option [value]="Order.Visits">
-        Visits
-      </mat-option>
-      <mat-option [value]="Order.Title">
-        Title
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  Search:
-  <mat-form-field>
-    <input matInput type="text" [(ngModel)]="searchWord" (ngModelChange)="filter()">
-  </mat-form-field>
-  <button mat-button class="lol" *ngIf="adminOrCustomer()">My Tours</button>
+  <span class="toolbar-item">
+    <span>Items to show:</span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="filterType" (selectionChange)="filter()">
+        <mat-option [value]="FilterType.AllTours">
+          All Tours
+        </mat-option>
+        <mat-option *ngIf="customer()" [value]="FilterType.MyTours">
+          My Tours
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </span>
+  <div class="toolbar-item">
+    <span>Order by:</span>
+    <mat-form-field>
+      <mat-select [(ngModel)]="orderType" (selectionChange)="filter()">
+        <mat-option [value]="Order.Visits">
+          Visits
+        </mat-option>
+        <mat-option [value]="Order.Title">
+          Title
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="toolbar-item">
+    Search:
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="searchWord" (ngModelChange)="filter()">
+    </mat-form-field>
+  </div>
 </mat-toolbar>
 <mat-list>
   <mat-card class="card" *ngFor="let tour of toursToShow">
@@ -25,14 +39,14 @@
       <mat-card-title>{{tour.title}}</mat-card-title>
       <mat-card-subtitle>{{getCity(tour.cityId)}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="{{getTourImage(tour)}}" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="{{getTourImage(tour)}}" alt="Main tour photo">
     <mat-card-content>
       <p>
         {{tour.description}}
       </p>
     </mat-card-content>
     <mat-card-actions style="text-align: center">
-      <button mat-raised-button>Watch</button>
+      <button mat-raised-button (click)="goToTourDetails(tour.tourId)">Watch</button>
     </mat-card-actions>
   </mat-card>
 </mat-list>

@@ -16,11 +16,18 @@ export class AuthService {
       }
     }
 
-    adminOrCustomer = () => {
+    admin = () => {
         if (!this.signedIn() || !this.user) {
             return false;
         }
-        return (this.user.profileType == UserViewModelProfileType._2) || (this.user.profileType == UserViewModelProfileType._3);
+        return this.user.profileType == UserViewModelProfileType._3;
+    }
+
+    customer = () => {
+        if (!this.signedIn() || !this.user) {
+            return false;
+        }
+        return this.user.profileType == UserViewModelProfileType._2;
     }
 
     login = async (loginModel: LoginViewModel) => {

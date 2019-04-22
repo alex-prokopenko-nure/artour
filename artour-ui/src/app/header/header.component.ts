@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   }
 
   adminOrCustomer = () => {
-    return this.authService.adminOrCustomer();
+    return this.authService.admin() || this.authService.customer();
   }
 
   logout = () => {

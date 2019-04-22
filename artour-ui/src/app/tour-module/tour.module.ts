@@ -4,7 +4,6 @@ import { TourRoutingModule } from './tour-routing.module';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ManageComponent } from './manage/manage.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SetPasswordComponent } from './set-password/set-password.component';
@@ -46,9 +45,10 @@ import { UserService } from './services/user.service';
 import { TourService } from './services/tour.service';
 import { LocationsService } from './services/locations.service';
 import { FileService } from './services/file.service';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
-  declarations: [HomeComponent, ProfileComponent, ManageComponent, LoginComponent, RegisterComponent, SetPasswordComponent],
+  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DetailsComponent],
   imports: [
     CommonModule,
     TourRoutingModule,

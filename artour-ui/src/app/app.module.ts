@@ -42,7 +42,6 @@ import {
 import { AuthInterceptor } from './tour-module/http-helpers/auth.interceptor';
 import { AuthService } from './shared-module/services/auth.service';
 import { AuthGuardService } from './tour-module/http-helpers/auth.guard.service';
-import { CustomerGuardService } from './tour-module/http-helpers/customer.guard.service';
 import { UnauthGuardService } from './tour-module/http-helpers/unauth.guard.service';
 import { FormsModule } from '@angular/forms';
 
@@ -98,7 +97,6 @@ import { FormsModule } from '@angular/forms';
     },
     AuthService,
     AuthGuardService,
-    CustomerGuardService,
     UnauthGuardService
   ],
   bootstrap: [AppComponent]

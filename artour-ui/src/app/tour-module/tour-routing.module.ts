@@ -4,10 +4,9 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ManageComponent } from './manage/manage.component';
 import { UnauthGuardService } from './http-helpers/unauth.guard.service';
 import { AuthGuardService } from './http-helpers/auth.guard.service';
-import { CustomerGuardService } from './http-helpers/customer.guard.service';
+import { DetailsComponent } from './details/details.component';
 
 const routes: Routes = [
   {
@@ -30,9 +29,8 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: 'manage',
-    component: ManageComponent,
-    canActivate: [CustomerGuardService]
+    path: ':tourId',
+    component: DetailsComponent
   },
   { path: "**", redirectTo: "home" }
 ];
