@@ -45,10 +45,11 @@ import { UserService } from './services/user.service';
 import { TourService } from './services/tour.service';
 import { LocationsService } from './services/locations.service';
 import { FileService } from './services/file.service';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { DetailsComponent } from './details/details.component';
 
 @NgModule({
-  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DetailsComponent],
+  declarations: [HomeComponent, ProfileComponent, ManageComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent],
   imports: [
     CommonModule,
     TourRoutingModule,
@@ -94,6 +95,6 @@ import { DetailsComponent } from './details/details.component';
     LocationsService,
     FileService
   ],
-  entryComponents: [SetPasswordComponent]
+  entryComponents: [SetPasswordComponent, DeleteDialogComponent]
 })
 export class TourModule { }
