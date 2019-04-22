@@ -1,0 +1,19 @@
+<div class="narrow-block">
+  <form [formGroup]="imageForm">
+    <div class="input-box">
+      <input type="text" placeholder="Image title" class="input" formControlName="title">
+    </div>
+    <div class="input-box">
+      <input type="text" placeholder="Image subtitle" class="input" formControlName="subtitle">
+    </div>
+  </form>
+  <input type="file" #image style="display: none" (change)="onFileAdded()"  /> <!-- formControlName="image" -->
+  <div>
+    <img *ngIf="imgSrcToShow" [src]="imgSrcToShow"  width="384" height="216"/>
+  </div>
+  <label (click)="addFile()">
+    Upload Image
+  </label><br />
+  <button class="btn btn-green" [ngClass]="{'btn-gray': clicked}" [disabled]="clicked" (click)="saveImage()">Save</button>
+  <p class="msg error-msg" *ngIf="errorMessage">{{errorMessage}}</p>
+</div>

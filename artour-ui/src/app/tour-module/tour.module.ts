@@ -47,9 +47,13 @@ import { LocationsService } from './services/locations.service';
 import { FileService } from './services/file.service';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { DetailsComponent } from './details/details.component';
+import { SightDetailsComponent } from './sight-details/sight-details.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SightService } from './services/sight.service';
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 
 @NgModule({
-  declarations: [HomeComponent, ProfileComponent, ManageComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent],
+  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent],
   imports: [
     CommonModule,
     TourRoutingModule,
@@ -85,7 +89,8 @@ import { DetailsComponent } from './details/details.component';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    DragDropModule
   ],
   providers: [
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
@@ -93,8 +98,9 @@ import { DetailsComponent } from './details/details.component';
     UserService,
     TourService,
     LocationsService,
-    FileService
+    FileService, 
+    SightService
   ],
-  entryComponents: [SetPasswordComponent, DeleteDialogComponent]
+  entryComponents: [SetPasswordComponent, DeleteDialogComponent, SightDetailsComponent, ImageDialogComponent]
 })
 export class TourModule { }

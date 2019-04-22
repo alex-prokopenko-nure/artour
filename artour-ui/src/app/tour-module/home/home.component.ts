@@ -10,6 +10,7 @@ import { LocationsService } from '../services/locations.service';
 import { Order } from '../enums/order.enum';
 import { FileService } from '../services/file.service';
 import { FilterType } from '../enums/filter.enum';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -51,6 +52,10 @@ export class HomeComponent implements OnInit {
       }
     });
 
+    this.getTours();
+  }
+
+  getTours = () => {
     this.tourService.getAllTours().subscribe(result => {
       this.tours = result;
       for (let i = 0; i < result.length; ++i) {
@@ -123,5 +128,33 @@ export class HomeComponent implements OnInit {
 
   goToTourDetails = (tourId: number) => {
     this.router.navigateByUrl(`tours/${tourId}`);
+  }
+
+  addTour = () => {
+    let tour = new TourViewModel();
+    tour.title = "_New_Tour_Title";
+    tour.description = "_New_Tour_Description";
+    tour.ownerId = this.authService.currentUserId;
+    tour.cityId = 1;
+    this.tourService.createTour(tour).subscribe(
+      result => {
+        this.goToTourDetails(result.tourId);
+      }
+    )
+  }
+
+  deleteTour = (tourId: number) => {
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.tourService.deleteTour(tourId).subscribe(
+            result => {
+              this.getTours();
+            }
+          );
+        }
+      }
+    )
   }
 }

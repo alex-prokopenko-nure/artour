@@ -1,0 +1,23 @@
+<div class="container">
+  <div>
+    {{sight.title}}
+  </div>
+  <div>
+    {{sight.description}}
+  </div>
+  <div class="example-container" *ngFor="let list of imagesData; let i = index">
+    <div cdkDropList [cdkDropListData]="imagesData[i]" cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of imagesData[i]; let j = index" cdkDrag>
+        <span class="item-number">{{i * 4 + j + 1}}</span>
+        <div class="img-holder">
+          <img [src]="sources[i * 4 + j]" width="418" height="235"/>
+        </div>
+        <div class="buttons-holder">
+          <button class="btn btn-o" (click)="updateImage(item.playerHubImageId)">Update</button>
+          <button class="btn btn-transparent" (click)="deleteImage(item.playerHubImageId)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-icon class="add-btn" (click)="openDialog()">add</mat-icon>
+</div>

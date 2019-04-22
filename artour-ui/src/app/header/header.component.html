@@ -5,7 +5,7 @@
   <span class="example-fill-remaining-space"></span>
 
   <button mat-button class="nav-action" (click)="navigate('home')">Home</button>
-  <button mat-button class="nav-action" (click)="navigate('manage')" *ngIf="adminOrCustomer()">Tours</button>
+  <!-- <button mat-button class="nav-action" (click)="navigate('manage')" *ngIf="adminOrCustomer()">Tours</button> -->
   <button mat-button class="nav-action" (click)="navigate('profile')" *ngIf="signedIn()">Profile</button>
   <button mat-button class="nav-action" (click)="navigate('login')" *ngIf="!signedIn()">Sign In</button>
   <button mat-button class="nav-action" (click)="navigate('register')" *ngIf="!signedIn()">Sign Up</button>

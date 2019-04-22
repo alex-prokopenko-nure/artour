@@ -23,19 +23,56 @@
     </div>
     </div>
   </mat-drawer>
+  
   <mat-drawer-content *ngIf="tour">
-    <span class="title">{{tour.title}}</span>
-    <button mat-button (click)="drawer.toggle()"><< Statistics</button>
-    <div class="small-title">
-      {{tour.description}}
-    </div>
-    <div class="mid-title">
-      Tour sights:
-    </div>
-    <div class="sights-container">
-      <div *ngFor="let sight of tour.sights">
-        {{sight.title}}
+      <span *ngIf="!editMode" class="title">{{tour.title}}</span>
+      <div *ngIf="!editMode" class="small-title">
+        City: <span>{{getCity(tour.cityId)}}</span>
       </div>
-    </div>
+      <div *ngIf="!editMode" class="small-title">
+        {{tour.description}}
+      </div>
+      <form *ngIf="editMode" [formGroup]="editForm">
+        <mat-form-field>
+          <input matInput type="text" formControlName="title" placeholder="Title"/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Choose city" formControlName="cityId">
+            <mat-option *ngFor="let city of cities" [value]="city.cityId">{{city.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" formControlName="description" placeholder="Description"/>
+        </mat-form-field>
+      </form>
+      <div style="width: 100%; text-align: center;">
+        <mat-icon (click)="drawer.toggle()">assessment</mat-icon>
+        <mat-icon *ngIf="!editMode && (usersTour() || admin())" (click)="openEditMode()">edit</mat-icon>
+        <mat-icon *ngIf="editMode && (usersTour() || admin())" style="color: rgb(60, 255, 1);" (click)="saveChanges()">done</mat-icon>
+        <mat-icon *ngIf="editMode && (usersTour() || admin())" style="color: red;" (click)="closeEditMode()">close</mat-icon>
+      </div>
+      <div class="mid-title">
+        Tour sights:
+      </div>
+      <div class="sights-container">
+        <mat-card class="sight" *ngFor="let sight of tour.sights">
+          <mat-card-header>
+            <mat-card-title>{{sight.title}}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="{{getSightImage(sight)}}"/>
+          <mat-card-content>
+              <p>
+                {{sight.description}}
+              </p>
+            </mat-card-content>
+            <mat-card-actions style="text-align: center">
+              <button mat-raised-button (click)="showSight(sight.sightId)">Watch</button>
+              <button mat-raised-button *ngIf="admin() || usersTour(tour)" color="warn" (click)="deleteTour(tour.tourId)">Delete</button>
+            </mat-card-actions>
+        </mat-card>
+        <div class="sight new-sight" *ngIf="usersTour(tour) || admin()" (click)="addSight()">
+          <mat-icon class="plus">add</mat-icon>
+        </div>
+      </div>
   </mat-drawer-content>
 </mat-drawer-container>

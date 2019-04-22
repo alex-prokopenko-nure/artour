@@ -105,8 +105,11 @@ namespace Artour.BLL.Services
             var tourToUpdate = await _applicationDbContext.Tours.FirstOrDefaultAsync(x => x.TourId == tourId);
             tourToUpdate.Title = tour.Title;
             tourToUpdate.Description = tour.Description;
+            tourToUpdate.CityId = tour.CityId;
+            tourToUpdate.City = await _applicationDbContext.Cities.FirstOrDefaultAsync(x => x.CityId == tour.CityId);
             _applicationDbContext.Tours.Update(tourToUpdate);
             await _applicationDbContext.SaveChangesAsync();
+            tourToUpdate.City = null;
             return _mapper.Map<TourViewModel>(tourToUpdate);
         }
 

@@ -19,6 +19,13 @@ namespace Artour.WebAPI.Controllers
             _sightsService = sightsService;
         }
 
+        [HttpGet("{sightId}")]
+        public async Task<ActionResult<SightViewModel>> GetSightById(Int32 sightId)
+        {
+            var result = await _sightsService.GetSight(sightId);
+            return Ok(result);
+        }
+
         [HttpGet("tour/{tourId}")]
         public async Task<ActionResult<IEnumerable<SightViewModel>>> GetSightsByTourId(Int32 tourId)
         {

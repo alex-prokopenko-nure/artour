@@ -34,6 +34,14 @@ namespace Artour.BLL.Services
             return _mapper.Map<SightViewModel>(sightToCreate);
         }
 
+        public async Task<SightViewModel> GetSight(int sightId)
+        {
+            var result = await _applicationDbContext.Sights
+                .Include(x => x.Images)
+                .FirstOrDefaultAsync(x => x.SightId == sightId);
+            return _mapper.Map<SightViewModel>(result);
+        }
+
         public async Task DeleteSight(int sightId)
         {
             Sight sightToDelete = new Sight { SightId = sightId };

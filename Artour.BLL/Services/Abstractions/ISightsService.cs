@@ -10,6 +10,7 @@ namespace Artour.BLL.Services.Abstractions
     {
         Task<IEnumerable<SightViewModel>> GetTourSights(Int32 tourId);
         Task<SightViewModel> CreateSight(SightViewModel sight);
+        Task<SightViewModel> GetSight(int sightId);
         Task<SightViewModel> UpdateSight(Int32 sightId, SightViewModel sight);
         Task DeleteSight(Int32 sightId);
     }

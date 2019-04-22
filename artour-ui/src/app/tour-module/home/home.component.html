@@ -47,6 +47,8 @@
     </mat-card-content>
     <mat-card-actions style="text-align: center">
       <button mat-raised-button (click)="goToTourDetails(tour.tourId)">Watch</button>
+      <button mat-raised-button *ngIf="admin() || usersTour(tour)" color="warn" (click)="deleteTour(tour.tourId)">Delete</button>
     </mat-card-actions>
   </mat-card>
 </mat-list>
+<button class="add-button" mat-raised-button (click)="addTour()" *ngIf="customer() || admin()">Add tour</button>
