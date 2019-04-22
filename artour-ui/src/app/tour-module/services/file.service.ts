@@ -16,12 +16,12 @@ export class FileService {
     return `${this._baseUrl}/api/sight-images/${sightImageId}/data`;
   }
 
-  createImage = (image: FileParameter, title: string, sightId: number) => {
-    return this._artourApiService.createSightImage(title, sightId, image);
+  createImage = (image: FileParameter, description: string, sightId: number) => {
+    return this._artourApiService.createSightImage(description, sightId, image);
   };
 
-  changeOrder = (previousIndex: number, currentIndex: number) => {
-    return this._artourApiService.changeOrder(previousIndex, currentIndex);
+  changeOrder = (previousIndex: number, currentIndex: number, sightId: number) => {
+    return this._artourApiService.changeOrder(previousIndex, currentIndex, sightId);
   }
 
   updateImage = (id: number, image: FileParameter) => {

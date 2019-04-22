@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material';
 import { SightDetailsComponent } from '../sight-details/sight-details.component';
 import { SightService } from '../services/sight.service';
 import { FileService } from '../services/file.service';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-details',
@@ -58,6 +59,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.tourService.getTour(tourId).subscribe(
       result => {
         this.tour = result;
+        for (let i = 0; i < this.tour.sights.length; ++i) {
+          this.tour.sights[i].images = this.tour.sights[i].images.sort((a, b) => a.order - b.order);
+        }
       }
     );
     this.tourService.getTourStatistics(tourId).subscribe(
@@ -150,5 +154,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
       return this.fileService.getSightImageData(sight.images[0].sightImageId);
     }
     return "../../../assets/images/noimage.png"
+  }
+
+  deleteSight = (sightId: number) => {
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.sightService.deleteSight(sightId).subscribe(
+            () => this.getTour(this.tourId)
+          );
+        }
+      }
+    );
   }
 }

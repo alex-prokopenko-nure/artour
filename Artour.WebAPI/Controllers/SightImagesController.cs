@@ -58,9 +58,9 @@ namespace Artour.WebAPI.Controllers
         }
 
         [HttpPut("change-order")]
-        public async Task<IActionResult> ChangeOrder(Int32 previousOrder, Int32 currentOrder)
+        public async Task<IActionResult> ChangeOrder(Int32 previousOrder, Int32 currentOrder, Int32 sightId)
         {
-            await _sightImagesService.ChangeOrder(previousOrder, currentOrder);
+            await _sightImagesService.ChangeOrder(previousOrder, currentOrder, sightId);
             return Ok();
         }
 

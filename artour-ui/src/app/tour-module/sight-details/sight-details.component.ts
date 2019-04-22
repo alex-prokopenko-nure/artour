@@ -37,6 +37,7 @@ export class SightDetailsComponent implements OnInit {
     this.sightService.getSight(this.sightId).subscribe(
       result => {
         this.sight = result;
+        this.sight.images = this.sight.images.sort((a, b) => a.order - b.order);
         this.splitImagesToLists();
         for (let i = 0; i < this.sight.images.length; ++i) {
           this.sources[i] = this.fileService.getSightImageData(this.sight.images[i].sightImageId) + "?" + Date.now().toString();
@@ -73,14 +74,14 @@ export class SightDetailsComponent implements OnInit {
       moveItemInArray(this.sources, previousOrder, currentOrder);
       moveItemInArray(this.sight.images, previousOrder, currentOrder);
     }
-    this.fileService.changeOrder(previousOrder, currentOrder).subscribe(
+    this.fileService.changeOrder(previousOrder, currentOrder, this.sightId).subscribe(
       () => console.log("success"),
       () => console.log("error")
     );
   }
 
   checkData = () => {
-    for (let i = 0; i < this.data.length - 1; ++i) {
+    for (let i = 0; i < this.imagesData.length - 1; ++i) {
       if (this.imagesData[i].length < 4) {
         this.pushUpLists(i);
         return 1;
@@ -90,13 +91,13 @@ export class SightDetailsComponent implements OnInit {
   }
 
   pushUpLists = (index: number) => {
-    for (let i = this.data.length - 1; i > index; --i) {
+    for (let i = this.imagesData.length - 1; i > index; --i) {
       transferArrayItem(this.imagesData[i], this.imagesData[i - 1], 0, 4);
     }
   }
 
   findIndexInData = (arr: SightImageViewModel[]) => {
-    for(let i = 0; i < this.data.length; ++i) {
+    for(let i = 0; i < this.imagesData.length; ++i) {
       if(this.imagesData[i].every(x => arr.find(y => y.sightImageId == x.sightImageId)))
         return i;
     }
@@ -104,7 +105,7 @@ export class SightDetailsComponent implements OnInit {
   }
 
   openDialog = () => {
-    const dialogRef = this.dialog.open(ImageDialogComponent);
+    const dialogRef = this.dialog.open(ImageDialogComponent, {data: {imageId: undefined, sightId: this.sightId}});
     dialogRef.afterClosed().subscribe(
       res => {
         if (res) {
@@ -121,19 +122,19 @@ export class SightDetailsComponent implements OnInit {
     }
   }
 
-  // updateImage = (imageId: number) => {
-  //   const dialogRef = this.dialog.open(ImageDialogComponent,
-  //     {data: imageId}
-  //   );
-  //   dialogRef.afterClosed().subscribe(
-  //     res => {
-  //       if (res) {
-  //         let i = this.sight.images.findIndex(x => x.sightImageId == imageId);
-  //         this.sources[i] = this.fileService.getSightImageData(imageId) + "?" + Date.now().toString();
-  //       }
-  //     }
-  //   );
-  // }
+  updateImage = (imageId: number) => {
+    const dialogRef = this.dialog.open(ImageDialogComponent,
+      {data: {imageId: imageId, sightId: this.sightId}}
+    );
+    dialogRef.afterClosed().subscribe(
+      res => {
+        if (res) {
+          let i = this.sight.images.findIndex(x => x.sightImageId == imageId);
+          this.sources[i] = this.fileService.getSightImageData(imageId) + "?" + Date.now().toString();
+        }
+      }
+    );
+  }
 
   deleteImage = (imageId: number) => {
     const dialogRef = this.dialog.open(DeleteDialogComponent);

@@ -27,7 +27,7 @@ namespace Artour.BLL.Services
         {
             var outputFilename = GetOutputFilename(fileToSave.FileName, ApplicationSettingsManager<ApplicationSettings>.Settings.ImageDirectory);
             var fileInfo = await SaveFileAsync(fileToSave, outputFilename);
-            var allImages = _applicationDbContext.SightImages.Select(x => x);
+            var allImages = _applicationDbContext.SightImages.Where(x => x.SightId == sightId);
 
             var result = new SightImage()
             {
@@ -106,12 +106,14 @@ namespace Artour.BLL.Services
             }
         }
 
-        public async Task ChangeOrder(Int32 previousOrder, Int32 currentOrder)
+        public async Task ChangeOrder(Int32 previousOrder, Int32 currentOrder, Int32 sightId)
         {
             if (previousOrder > currentOrder)
             {
-                var images = _applicationDbContext.SightImages.Where(x => x.Order >= currentOrder && x.Order < previousOrder);
-                var changedImage = await _applicationDbContext.SightImages.FirstOrDefaultAsync(x => x.Order == previousOrder);
+                var images = _applicationDbContext.SightImages
+                    .Where(x => x.Order >= currentOrder && x.Order < previousOrder && x.SightId == sightId);
+                var changedImage = await _applicationDbContext.SightImages
+                    .FirstOrDefaultAsync(x => x.Order == previousOrder && x.SightId == sightId);
                 foreach (var image in images)
                 {
                     ++image.Order;
@@ -122,8 +124,10 @@ namespace Artour.BLL.Services
             }
             else
             {
-                var images = _applicationDbContext.SightImages.Where(x => x.Order <= currentOrder && x.Order > previousOrder);
-                var changedImage = await _applicationDbContext.SightImages.FirstOrDefaultAsync(x => x.Order == previousOrder);
+                var images = _applicationDbContext.SightImages
+                    .Where(x => x.Order <= currentOrder && x.Order > previousOrder && x.SightId == sightId);
+                var changedImage = await _applicationDbContext.SightImages
+                    .FirstOrDefaultAsync(x => x.Order == previousOrder && x.SightId == sightId);
                 foreach (var image in images)
                 {
                     --image.Order;
@@ -161,7 +165,7 @@ namespace Artour.BLL.Services
             var deletedImage = await _applicationDbContext.SightImages.FirstOrDefaultAsync(x => x.SightImageId == id);
             _applicationDbContext.Attach(deletedImage);
             _applicationDbContext.Remove(deletedImage);
-            UpdateOrders(deletedImage.Order);
+            UpdateOrders(deletedImage.Order, deletedImage.SightId);
             await _applicationDbContext.SaveChangesAsync();
             try
             {
@@ -173,9 +177,9 @@ namespace Artour.BLL.Services
             }
         }
 
-        private void UpdateOrders(Int32 deletedOrder)
+        private void UpdateOrders(Int32 deletedOrder, Int32 sightId)
         {
-            var images = _applicationDbContext.SightImages.Where(x => x.Order > deletedOrder);
+            var images = _applicationDbContext.SightImages.Where(x => x.Order > deletedOrder && x.SightId == sightId);
             foreach (var image in images)
             {
                 --image.Order;

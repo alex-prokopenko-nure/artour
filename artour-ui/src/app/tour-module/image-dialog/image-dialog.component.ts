@@ -18,6 +18,7 @@ export class ImageDialogComponent implements OnInit {
   uploadedFile: File = undefined;
   imgSrcToShow;
   imageId: number;
+  sightId: number;
   imageToEdit: SightImageViewModel;
   errorMessage: string;
   clicked: boolean = false;
@@ -31,13 +32,18 @@ export class ImageDialogComponent implements OnInit {
     ) { 
       if (data) {
         this.imageId = data.imageId;
-        fileService.getImage(this.imageId).subscribe(
-          result => {
-            this.imageToEdit = result;
-            this.imageForm.controls['description'].setValue(result.description);
-          }
-        );
-        this.imgSrcToShow = fileService.getSightImageData(this.imageId) + "?" + Date.now().toString();
+        this.sightId = data.sightId;
+        if (this.imageId) {
+          fileService.getImage(this.imageId).subscribe(
+            result => {
+              this.imageToEdit = result;
+              this.imageForm.controls['description'].setValue(result.description);
+            }
+          );
+          this.imgSrcToShow = fileService.getSightImageData(this.imageId) + "?" + Date.now().toString();
+        } else {
+          this.imgSrcToShow = "../../../assets/images/noimage.png";
+        }
       }
       this.imageForm = builder.group({ 
           description: ["", Validators.required]
@@ -114,12 +120,12 @@ export class ImageDialogComponent implements OnInit {
           this.dialogRef.close(true)
         }
       } else {
-        this.fileService.createImage({data: this.uploadedFile, fileName: this.uploadedFile.name}, val.title, sightId).subscribe(
+        this.fileService.createImage({data: this.uploadedFile, fileName: this.uploadedFile.name}, val.description, this.sightId).subscribe(
           () => this.dialogRef.close(true)
         );
       }
     } else {
-      this.errorMessage = "Fill image title, subtitle and upload an image please";
+      this.errorMessage = "Fill image description please";
     }
   }
 }

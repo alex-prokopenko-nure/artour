@@ -14,4 +14,8 @@ export class SightService {
   getSight = (sightId: number) => {
     return this._artourApiService.getSightById(sightId);
   }
+
+  deleteSight = (sightId: number) => {
+    return this._artourApiService.deleteSight(sightId);
+  }
 }

@@ -67,7 +67,7 @@
             </mat-card-content>
             <mat-card-actions style="text-align: center">
               <button mat-raised-button (click)="showSight(sight.sightId)">Watch</button>
-              <button mat-raised-button *ngIf="admin() || usersTour(tour)" color="warn" (click)="deleteTour(tour.tourId)">Delete</button>
+              <button mat-raised-button *ngIf="admin() || usersTour(tour)" color="warn" (click)="deleteSight(sight.sightId)">Delete</button>
             </mat-card-actions>
         </mat-card>
         <div class="sight new-sight" *ngIf="usersTour(tour) || admin()" (click)="addSight()">

@@ -39,6 +39,7 @@ namespace Artour.BLL.Services
             var result = await _applicationDbContext.Sights
                 .Include(x => x.Images)
                 .FirstOrDefaultAsync(x => x.SightId == sightId);
+            result.Images.OrderBy(x => x.Order);
             return _mapper.Map<SightViewModel>(result);
         }
 

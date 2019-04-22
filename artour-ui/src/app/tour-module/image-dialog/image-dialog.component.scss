@@ -1,10 +1,12 @@
 .narrow-block {
+  width: 480px;
   font-size: 1.125em;
-  letter-spacing: 3.6px;
+  text-align: center;
   margin: 50px 0;
 }
 
 label {
+  font: 500 20px/32px Roboto,"Helvetica Neue",sans-serif;
   &:hover{
       cursor: pointer;
       text-decoration: underline;

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" cdkDropListGroup>
   <div>
     {{sight.title}}
   </div>
@@ -13,11 +13,19 @@
           <img [src]="sources[i * 4 + j]" width="418" height="235"/>
         </div>
         <div class="buttons-holder">
-          <button class="btn btn-o" (click)="updateImage(item.playerHubImageId)">Update</button>
-          <button class="btn btn-transparent" (click)="deleteImage(item.playerHubImageId)">Delete</button>
+          <button mat-raised-button color="accent" (click)="updateImage(item.sightImageId)">Update</button>
+          <button mat-raised-button color="warn" (click)="deleteImage(item.sightImageId)">Delete</button>
         </div>
       </div>
     </div>
   </div>
+  <div style="display: flex;">
   <mat-icon class="add-btn" (click)="openDialog()">add</mat-icon>
+  <mat-icon class="add-btn" (click)="editSight()">edit</mat-icon>
+  <mat-icon class="add-btn" (click)="saveSight()">done</mat-icon>
+  <mat-icon class="add-btn" (click)="cancel()">close</mat-icon>
+  </div>
+</div>
+<div class="carousel">
+
 </div>

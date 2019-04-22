@@ -14,7 +14,7 @@ namespace Artour.BLL.Services.Abstractions
         Task<SightImageViewModel> GetImageByIdAsync(Int32 imageId);
         FileInfo GetFileInfo(SightImageViewModel image);
         String GetImageMimeType(String extension);
-        Task ChangeOrder(Int32 previousOrder, Int32 currentOrder);
+        Task ChangeOrder(Int32 previousOrder, Int32 currentOrder, Int32 sightId);
         Task UpdateImage(Int32 id, IFormFile fileToSave);
         Task UpdateInfo(Int32 id, SightImageViewModel model);
         Task DeleteImage(Int32 id);

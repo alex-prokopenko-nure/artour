@@ -59,6 +59,9 @@ export class HomeComponent implements OnInit {
     this.tourService.getAllTours().subscribe(result => {
       this.tours = result;
       for (let i = 0; i < result.length; ++i) {
+        if (this.tours[i].sights && this.tours[i].sights.length > 0) {
+          this.tours[i].sights[0].images = this.tours[i].sights[0].images.sort((a, b) => a.order - b.order);
+        }
         let city = result[i].city;
         if (this.cities.findIndex(x => x.cityId == city.cityId) == -1) this.cities.push(city);
       }
