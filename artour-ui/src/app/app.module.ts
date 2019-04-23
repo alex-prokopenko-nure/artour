@@ -44,6 +44,13 @@ import { AuthService } from './shared-module/services/auth.service';
 import { AuthGuardService } from './tour-module/http-helpers/auth.guard.service';
 import { UnauthGuardService } from './tour-module/http-helpers/unauth.guard.service';
 import { FormsModule } from '@angular/forms';
+import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
+
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+  direction: 'horizontal',
+  slidesPerView: 'auto',
+  observer: true
+};
 
 @NgModule({
   declarations: [
@@ -86,7 +93,8 @@ import { FormsModule } from '@angular/forms';
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    SwiperModule
   ],
   providers: [
     HttpClient,
@@ -97,7 +105,11 @@ import { FormsModule } from '@angular/forms';
     },
     AuthService,
     AuthGuardService,
-    UnauthGuardService
+    UnauthGuardService,
+    {
+      provide: SWIPER_CONFIG,
+      useValue: DEFAULT_SWIPER_CONFIG
+    }
   ],
   bootstrap: [AppComponent]
 })

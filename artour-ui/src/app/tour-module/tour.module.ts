@@ -51,6 +51,13 @@ import { SightDetailsComponent } from './sight-details/sight-details.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SightService } from './services/sight.service';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
+import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
+
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+  direction: 'horizontal',
+  slidesPerView: 1,
+  observer: true
+};
 
 @NgModule({
   declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent],
@@ -90,7 +97,8 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
     MatSortModule,
     MatPaginatorModule,
     MatMomentDateModule,
-    DragDropModule
+    DragDropModule,
+    SwiperModule
   ],
   providers: [
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
@@ -99,7 +107,11 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
     TourService,
     LocationsService,
     FileService, 
-    SightService
+    SightService,
+    {
+      provide: SWIPER_CONFIG,
+      useValue: DEFAULT_SWIPER_CONFIG
+    }
   ],
   entryComponents: [SetPasswordComponent, DeleteDialogComponent, SightDetailsComponent, ImageDialogComponent]
 })

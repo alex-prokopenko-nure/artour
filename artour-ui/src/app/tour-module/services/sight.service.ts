@@ -15,6 +15,10 @@ export class SightService {
     return this._artourApiService.getSightById(sightId);
   }
 
+  updateSight = (sightId: number, sight: SightViewModel) => {
+    return this._artourApiService.updateSight(sightId, sight);
+  }
+
   deleteSight = (sightId: number) => {
     return this._artourApiService.deleteSight(sightId);
   }

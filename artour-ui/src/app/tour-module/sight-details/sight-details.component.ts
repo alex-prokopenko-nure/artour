@@ -1,11 +1,17 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { SightService } from '../services/sight.service';
-import { SightViewModel, SightImageViewModel } from 'src/app/shared-module/services/artour.api.service';
+import { SightViewModel, SightImageViewModel, TourViewModel } from 'src/app/shared-module/services/artour.api.service';
 import { FileService } from '../services/file.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/shared-module/services/auth.service';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
 @Component({
   selector: 'app-sight-details',
@@ -14,22 +20,45 @@ import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 })
 export class SightDetailsComponent implements OnInit {
   sightId: number;
+  tour: TourViewModel;
   sight: SightViewModel = new SightViewModel();
+  editMode: boolean = false;
+  editForm: FormGroup;
   imagesData = [];
   sources = [];
+
+  public SWIPER_CONFIG: SwiperConfigInterface = {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    observer: true,
+    centeredSlides: true,
+    autoplay: {
+      delay: 7000,
+    },
+    loop: true
+  };
+
 
   constructor(
     private dialogRef: MatDialogRef<SightDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sightService: SightService,
     private fileService: FileService,
-    private dialog: MatDialog
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private builder: FormBuilder
   ) { 
 
   }
 
   ngOnInit() {
+    this.editForm = this.builder.group({
+      title: ["", Validators.required],
+      description: ["", Validators.required]
+    })
     this.sightId = this.data.sightId;
+    this.tour = this.data.tour;
     this.fillLists();
   }
 
@@ -147,5 +176,39 @@ export class SightDetailsComponent implements OnInit {
         }
       }
     );
+  }
+
+  usersTour = () => {
+    return this.tour.ownerId == this.authService.currentUserId;
+  }
+
+  customer = () => {
+    return this.authService.customer();
+  }
+
+  admin = () => {
+    return this.authService.admin();
+  }
+
+  editSight = () => {
+    this.editMode = true;
+    this.editForm.controls['title'].setValue(this.sight.title);
+    this.editForm.controls['description'].setValue(this.sight.description);
+  }
+
+  cancel = () => {
+    this.editMode = false;
+  }
+
+  saveSight = () => {
+    this.sight.title = this.editForm.controls['title'].value;
+    this.sight.description = this.editForm.controls['description'].value;
+    this.editMode = false;
+
+    this.sightService.updateSight(this.sightId, this.sight).subscribe();
+  }
+
+  close = () => {
+    this.dialogRef.close();
   }
 }

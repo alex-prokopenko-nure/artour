@@ -132,7 +132,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         sightId = result.sightId;
       }
     );
-    const dialogRef = this.dialog.open(SightDetailsComponent, {data: {sightId: sightId}});
+    const dialogRef = this.dialog.open(SightDetailsComponent, {data: {sightId: sightId, tour: this.tour}});
     dialogRef.afterClosed().subscribe(
       result => {
         this.getTour(this.tourId);
@@ -141,7 +141,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   showSight = (sightId: number) => {
-    const dialogRef = this.dialog.open(SightDetailsComponent, {data: {sightId: sightId}});
+    const dialogRef = this.dialog.open(SightDetailsComponent, {data: {sightId: sightId, tour: this.tour}});
     dialogRef.afterClosed().subscribe(
       result => {
         this.getTour(this.tourId);
