@@ -197,5 +197,32 @@ namespace Artour.BLL.Services
             userToUpdate.LastName = userViewModel.LastName;
             await _applicationDbContext.SaveChangesAsync();
         }
+
+        public async Task<UserStatisticsViewModel> GetUserStatistics(int userId)
+        {
+            var usersVisits = await _applicationDbContext.Visits
+                .Include(x => x.SightSeens)
+                .Include(x => x.Tour)
+                .ThenInclude(x => x.City)
+                .ThenInclude(x => x.Country)
+                .ThenInclude(x => x.Region)
+                .Where(x => x.UserId == userId && x.EndDate != null).ToListAsync();
+            var distinctTourVisits = usersVisits.Distinct(new DistinctToursComparer());
+            var toursVisited = distinctTourVisits.Count();
+            var sightsSeen = distinctTourVisits.Aggregate(0, (sum, x) => sum += x.SightSeens != null ? x.SightSeens.Count() : 0, sum => sum);
+            var visitsInfo = usersVisits.Select(x => 
+            new VisitInfoViewModel {
+                VisitId = x.VisitId,
+                DurationInSeconds = (int)(x.EndDate - x.StartDate).TotalSeconds,
+                TourId = x.TourId,
+                TourTitle = x.Tour.Title,
+                City = x.Tour.City.Name,
+                Country = x.Tour.City.Country.Name,
+                Region = x.Tour.City.Country.Region.Name
+            }).ToList();
+            UserStatisticsViewModel result = new UserStatisticsViewModel { ToursVisited = toursVisited, SightsSeen = sightsSeen, Visits = visitsInfo };
+
+            return result;
+        }
     }
 }

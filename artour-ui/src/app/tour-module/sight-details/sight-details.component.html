@@ -1,47 +1,49 @@
-<div class="container" *ngIf="usersTour() && customer() || admin()" cdkDropListGroup>
-  <div class="example-container" *ngFor="let list of imagesData; let i = index">
-    <div cdkDropList [cdkDropListData]="imagesData[i]" cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of imagesData[i]; let j = index" cdkDrag>
-        <span class="item-number">{{i * 4 + j + 1}}</span>
-        <div class="img-holder">
-          <img [src]="sources[i * 4 + j]" width="418" height="235"/>
-        </div>
-        <div class="buttons-holder">
-          <button mat-raised-button color="accent" (click)="updateImage(item.sightImageId)">Update</button>
-          <button mat-raised-button color="warn" (click)="deleteImage(item.sightImageId)">Delete</button>
+<div class="main"> 
+  <div class="container" *ngIf="usersTour() || admin()" cdkDropListGroup>
+    <div class="example-container" *ngFor="let list of imagesData; let i = index">
+      <div cdkDropList [cdkDropListData]="imagesData[i]" cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of imagesData[i]; let j = index" cdkDrag>
+          <span class="item-number">{{i * 4 + j + 1}}</span>
+          <div class="img-holder">
+            <img [src]="sources[i * 4 + j]" width="418" height="235"/>
+          </div>
+          <div class="buttons-holder">
+            <button mat-raised-button color="accent" (click)="updateImage(item.sightImageId)">Update</button>
+            <button mat-raised-button color="warn" (click)="deleteImage(item.sightImageId)">Delete</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div style="display: flex;">
-  <mat-icon class="add-btn" (click)="openDialog()">add</mat-icon>
-  <mat-icon class="add-btn" *ngIf="!editMode" (click)="editSight()">edit</mat-icon>
-  <mat-icon class="add-btn" *ngIf="editMode" (click)="saveSight()">done</mat-icon>
-  <mat-icon class="add-btn" *ngIf="editMode" (click)="cancel()">close</mat-icon>
-  </div>
-</div>
-<div *ngIf="!editMode" class="mid-title">
-    {{sight.title}}
-  </div>
-  <div *ngIf="!editMode" class="small-title">
-    {{sight.description}}
-  </div>
-  <form *ngIf="editMode" class="form" [formGroup]="editForm">
-    <mat-form-field>
-      <input matInput type="text" placeholder="Sight title" formControlName="title" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Sight description" formControlName="description" />
-    </mat-form-field>
-  </form>
-<div class="carousel" *ngIf="(!customer() || !usersTour()) && !admin()">
-  <swiper [config]="SWIPER_CONFIG">
-    <div class="swiper-slide" *ngFor="let image of sight.images; let i = index">
-      <img [src]="sources[i]" alt="..."/>
-      <div class="text-box">
-        {{image.description}}
-      </div>
+    <div style="display: flex;">
+    <mat-icon class="add-btn" (click)="openDialog()">add</mat-icon>
+    <mat-icon class="add-btn" *ngIf="!editMode" (click)="editSight()">edit</mat-icon>
+    <mat-icon class="add-btn" *ngIf="editMode" (click)="saveSight()">done</mat-icon>
+    <mat-icon class="add-btn" *ngIf="editMode" (click)="cancel()">close</mat-icon>
     </div>
-  </swiper>
+  </div>
+  <div *ngIf="!editMode" class="mid-title">
+      {{sight.title}}
+    </div>
+    <div *ngIf="!editMode" class="small-title">
+      {{sight.description}}
+    </div>
+    <form *ngIf="editMode" class="form" [formGroup]="editForm">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Sight title" formControlName="title" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Sight description" formControlName="description" />
+      </mat-form-field>
+    </form>
+  <div class="carousel">
+    <swiper [config]="SWIPER_CONFIG">
+      <div class="swiper-slide" *ngFor="let image of sight.images; let i = index">
+        <img [src]="sources[i]" alt="..."/>
+        <div class="text-box">
+          {{image.description}}
+        </div>
+      </div>
+    </swiper>
+  </div>
+  <button color="warn" (click)="close()" mat-stroked-button>Close</button>
 </div>
-<button color="warn" (click)="close()" mat-stroked-button>Close</button>

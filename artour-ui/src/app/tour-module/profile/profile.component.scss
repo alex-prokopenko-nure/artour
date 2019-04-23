@@ -1,5 +1,5 @@
 .example-card {
-  max-width: 400px;
+  max-width: 640px;
 }
   
 .example-header-image {
@@ -10,4 +10,8 @@
 .container {
     display: flex;
     justify-content: center;
+}
+
+table {
+  width: 600px;
 }

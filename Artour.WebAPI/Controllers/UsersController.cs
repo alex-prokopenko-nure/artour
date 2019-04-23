@@ -34,7 +34,15 @@ namespace Artour.WebAPI.Controllers
         public async Task<ActionResult<UserViewModel>> GetUser(Int32 userId)
         {
             var result = await _usersService.GetUserById(userId);
-            return result;
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("{userId}/statistics")]
+        public async Task<ActionResult<UserStatisticsViewModel>> GetUserStatistics(Int32 userId)
+        {
+            var result = await _usersService.GetUserStatistics(userId);
+            return Ok(result);
         }
 
         [HttpPost("login")]

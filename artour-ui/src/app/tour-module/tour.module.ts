@@ -37,7 +37,8 @@ import {
   MatSnackBarModule,
   MatTableModule,
   MatSortModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatBottomSheetModule
 } from '@angular/material';
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MailService } from './services/mail.service';
@@ -52,6 +53,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SightService } from './services/sight.service';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { ShareButtonsComponent } from './share-buttons/share-buttons.component';
+import { VisitDetailsComponent } from './visit-details/visit-details.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -60,11 +63,12 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent],
+  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent, ShareButtonsComponent, VisitDetailsComponent],
   imports: [
     CommonModule,
     TourRoutingModule,
     FormsModule,
+    MatBottomSheetModule,
     ReactiveFormsModule,
     MatCheckboxModule,
     MatButtonModule,
@@ -113,6 +117,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
       useValue: DEFAULT_SWIPER_CONFIG
     }
   ],
-  entryComponents: [SetPasswordComponent, DeleteDialogComponent, SightDetailsComponent, ImageDialogComponent]
+  entryComponents: [SetPasswordComponent, DeleteDialogComponent, SightDetailsComponent, ImageDialogComponent, ShareButtonsComponent]
 })
 export class TourModule { }

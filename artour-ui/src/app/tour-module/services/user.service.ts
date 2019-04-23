@@ -10,4 +10,12 @@ export class UserService {
   resetAndChangePassword = (model: ResetPasswordViewModel) => {
     return this._artourApiService.resetAndChangePassword(model);
   }
+
+  getUserStatistics = (userId: number) => {
+    return this._artourApiService.getUserStatistics(userId);
+  }
+
+  getUser = (userId: number) => {
+    return this._artourApiService.getUser(userId);
+  }
 }

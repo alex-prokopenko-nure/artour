@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { UnauthGuardService } from './http-helpers/unauth.guard.service';
 import { AuthGuardService } from './http-helpers/auth.guard.service';
 import { DetailsComponent } from './details/details.component';
+import { VisitDetailsComponent } from './visit-details/visit-details.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: ':tourId',
     component: DetailsComponent
+  },
+  {
+    path: 'visit/:visitId',
+    component: VisitDetailsComponent
   },
   { path: "**", redirectTo: "home" }
 ];
