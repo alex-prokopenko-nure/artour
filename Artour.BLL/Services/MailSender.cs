@@ -17,7 +17,7 @@ namespace Artour.BLL.Services
 {
     public class MailSender : IMailSender
     {
-        private const String PASSWORD_RECOVERY_SUBJECT = "Artour password recovery";
+        private const String ACCESS_CODE_SUBJECT = "Artour access code";
         private const String EMAIL_CONFIRMATION_SUBJECT = "Artour account confirmation";
 
         private readonly SmtpConfiguration _configuration;
@@ -28,14 +28,14 @@ namespace Artour.BLL.Services
             configuration.Bind(nameof(SmtpConfiguration), _configuration);
         }
 
-        public async Task SendRecoveryLink(String recipientEmail, String temporaryPassword, String userNickName, String recoveryLink)
+        public async Task SendAccessCode(String recipientEmail, String accessCode)
         {
             var message = new MailMessage(new MailAddress(_configuration.Login, "Artour"), new MailAddress(recipientEmail));
             String fullPath = System.Reflection.Assembly.GetAssembly(GetType()).Location;
             String currentDirectory = Path.GetDirectoryName(fullPath);
 
-            message.Body = await ReadMailTemplate(EmailTemplateNames.PASSWORD_RECOVERY, userNickName, temporaryPassword, recoveryLink);
-            message.Subject = PASSWORD_RECOVERY_SUBJECT;
+            message.Body = await ReadMailTemplate(EmailTemplateNames.ACCESS_CODE, accessCode);
+            message.Subject = ACCESS_CODE_SUBJECT;
             message.IsBodyHtml = false;
 
             await SendMail(message);

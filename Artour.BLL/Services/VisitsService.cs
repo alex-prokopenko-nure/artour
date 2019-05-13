@@ -4,6 +4,7 @@ using Artour.Domain.EntityFramework.Context;
 using Artour.Domain.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,12 @@ namespace Artour.BLL.Services
 {
     public class VisitsService : BaseService, IVisitsService
     {
-        public VisitsService(ApplicationDbContext applicationDbContext, IMapper mapper, IConfiguration configuration)
-            : base(applicationDbContext, mapper, configuration)
+        public VisitsService(
+            ApplicationDbContext applicationDbContext, 
+            IMapper mapper, 
+            IConfiguration configuration,
+            IMemoryCache cache)
+            : base(applicationDbContext, mapper, configuration, cache)
         { }
 
         public async Task<VisitViewModel> GetVisit(Guid visitId)
@@ -27,6 +32,8 @@ namespace Artour.BLL.Services
                 .Include(x => x.User)
                 .Include(x => x.SightSeens)
                 .FirstOrDefaultAsync(x => x.VisitId == visitId);
+
+            result.Tour.Visits = null;
 
             return _mapper.Map<VisitViewModel>(result);
         }

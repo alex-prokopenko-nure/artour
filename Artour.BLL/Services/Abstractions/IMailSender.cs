@@ -8,7 +8,7 @@ namespace Artour.BLL.Services.Abstractions
 {
     public interface IMailSender
     {
-        Task SendRecoveryLink(String recipientEmail, String temporaryPassword, String userNickName, String recoveryLink);
+        Task SendAccessCode(String recipientEmail, String accessCode);
 
         Task SendConfirmationEmail(UserViewModel userViewModel, String verificationLink);
     }

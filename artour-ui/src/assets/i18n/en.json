@@ -1,0 +1,83 @@
+{
+    "login": {
+        "title": "Sign in to manage your tours and share your experience",
+        "emailOrUsername": "E-mail or AR Tour username",
+        "password": "Remember me",
+        "button": "Sign in",
+        "forgot": "Forgot password?",
+        "email": "Email",
+        "sendLink": "Send reset link",
+        "back": "Back to loign"
+    },
+    "header": {
+        "artour": "AR Tour",
+        "login": "Sign In",
+        "register": "Sign Up",
+        "home": "Home",
+        "profile": "Profile",
+        "signout": "Sign Out"
+    },
+    "home": {
+        "watch": "Watch",
+        "delete": "Delete",
+        "addTour": "Add Tour",
+        "items": "Items to show",
+        "allTours": "All Tours",
+        "myTours": "My Tours",
+        "orderBy": "Order by",
+        "visits": "Visits",
+        "title": "Title",
+        "search": "Search"
+    },
+    "register": {
+        "makeUpUsername": "Make up your username",
+        "username": "Username",
+        "back": "Back",
+        "next": "Next",
+        "enterInfo": "Enter information about you",
+        "makeUpPassword": "Make up your password",
+        "confirmation": "Confirmation",
+        "email": "Email",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "dateOfBirth": "Date of birth",
+        "passWarning": "Password can include only latin symbols, numbers and special characters (6-21 characters length)",
+        "password": "Password",
+        "confirmPassword": "Confirm your password",
+        "name": "Name",
+        "signup": "Sign Up"
+    },
+    "tour": {
+        "city": "City",
+        "sights": "Tour sights",
+        "watch": "Watch",
+        "delete": "Delete",
+        "visits": "Visits number",
+        "users": "Users visited",
+        "lastWeek": "Visits last week",
+        "averageTime": "Average tour time",
+        "comments": "Comments",
+        "averageMark": "Average Mark",
+        "update": "Update",
+        "close": "Close",
+        "description": "Image description",
+        "upload": "Upload image",
+        "save": "Save"
+    },
+    "deletedialog": {
+        "title": "Are you sure you want to delete this?",
+        "okbutton": "Yes",
+        "cancelbutton": "No"
+    },
+    "profile": {
+        "recentTours": "Recently visited tours",
+        "tour": "Tour",
+        "city": "City",
+        "duration": "Duration",
+        "actions": "Actions",
+        "details": "Detais"
+    },
+    "visit": {
+        "share": "Share"
+    }
+}

@@ -54,7 +54,7 @@
       </div>
       <div>
         <mat-form-field>
-          <input matInput type="password" placeholder="Confirm your password" formControlName="confirmedPassword" required>
+          <input matInput type="password" placeholder="Confirm password" formControlName="confirmedPassword" required>
         </mat-form-field>
       </div>
       <div *ngIf="passwordFormGroup.controls.confirmedPassword.dirty && passwordFormGroup.errors?.differentPasswords && passwordFormGroup.invalid" class="error">

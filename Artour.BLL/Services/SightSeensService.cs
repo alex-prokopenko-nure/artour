@@ -3,6 +3,7 @@ using Artour.BLL.ViewModels;
 using Artour.Domain.EntityFramework.Context;
 using Artour.Domain.Models;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,12 @@ namespace Artour.BLL.Services
 {
     public class SightSeensService : BaseService, ISightSeensService
     {
-        public SightSeensService(ApplicationDbContext applicationDbContext, IMapper mapper, IConfiguration configuration)
-            : base(applicationDbContext, mapper, configuration)
+        public SightSeensService(
+            ApplicationDbContext applicationDbContext,
+            IMapper mapper,
+            IConfiguration configuration,
+            IMemoryCache cache)
+            : base(applicationDbContext, mapper, configuration, cache)
         { }
 
         public async Task CreateSightSeen(SightSeenViewModel sightSeen)

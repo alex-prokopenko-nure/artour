@@ -36,6 +36,7 @@ namespace Artour.WebAPI
             JwtSettings jwtSettings = new JwtSettings();
             Configuration.Bind(nameof(JwtSettings), jwtSettings);
 
+            services.AddMemoryCache();
             services.AddDbContext<ApplicationDbContext>();
             services.AddSingleton<DapperDbContext>();
             services.ConfigureBLLServices();

@@ -26,8 +26,8 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button *ngIf="!resetMode" mat-raised-button color="primary" (click)="login()">Sign in</button>
-    <button *ngIf="resetMode" mat-raised-button color="primary" (click)="resetPassword()">Send reset link</button>
+    <button *ngIf="!resetMode" mat-raised-button color="primary" (click)="login()">Sign In</button>
+    <button *ngIf="resetMode" mat-raised-button color="primary" (click)="resetPassword()">Send confirmation link</button>
     <div class="forgot-password">
       <a (click)="toggleResetPassword()">
         <span *ngIf="!resetMode">Forgot password?</span>

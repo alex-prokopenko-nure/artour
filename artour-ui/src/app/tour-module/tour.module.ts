@@ -55,6 +55,11 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { SwiperModule, SWIPER_CONFIG, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { ShareButtonsComponent } from './share-buttons/share-buttons.component';
 import { VisitDetailsComponent } from './visit-details/visit-details.component';
+import { VisitService } from './services/visit.service';
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { SharedModule } from '../shared-module';
+import { BrowserModule } from '@angular/platform-browser';
+import { SystemComponent } from './system/system.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -63,11 +68,13 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 };
 
 @NgModule({
-  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent, ShareButtonsComponent, VisitDetailsComponent],
+  declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent, ShareButtonsComponent, VisitDetailsComponent, SystemComponent],
   imports: [
+    BrowserModule,
     CommonModule,
     TourRoutingModule,
     FormsModule,
+    SharedModule,
     MatBottomSheetModule,
     ReactiveFormsModule,
     MatCheckboxModule,
@@ -102,7 +109,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     MatPaginatorModule,
     MatMomentDateModule,
     DragDropModule,
-    SwiperModule
+    SwiperModule,
+    ShareButtonsModule
   ],
   providers: [
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
@@ -112,6 +120,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     LocationsService,
     FileService, 
     SightService,
+    VisitService,
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG

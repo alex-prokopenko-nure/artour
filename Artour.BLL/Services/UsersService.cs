@@ -16,6 +16,7 @@ using Artour.BLL.Helper;
 using Artour.Domain.Models;
 using Artour.Domain.Enums;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Artour.BLL.Services
 {
@@ -25,8 +26,12 @@ namespace Artour.BLL.Services
         private readonly Random _rnd;
         private const Int32 YEAR_IN_MINUTES = 525600;
 
-        public UsersService(ApplicationDbContext applicationDbContext, IMapper mapper, IConfiguration configuration)
-            : base(applicationDbContext, mapper, configuration)
+        public UsersService(
+            ApplicationDbContext applicationDbContext,
+            IMapper mapper, 
+            IConfiguration configuration,
+            IMemoryCache cache)
+            : base(applicationDbContext, mapper, configuration, cache)
         {
             _rnd = new Random();
             jwtSettings = new JwtSettings();

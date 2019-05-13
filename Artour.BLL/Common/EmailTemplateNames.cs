@@ -6,7 +6,7 @@ namespace Artour.BLL.Common
 {
     public class EmailTemplateNames
     {
-        public const String PASSWORD_RECOVERY = "PasswordRecovery.html";
+        public const String ACCESS_CODE = "AccessCode.html";
         public const String EMAIL_CONFIRMATION = "EmailConfirmation.html";
     }
 }

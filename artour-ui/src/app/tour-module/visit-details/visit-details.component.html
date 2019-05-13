@@ -1,3 +1,14 @@
-<p>
-  visit-details works!
-</p>
+<div class="main" *ngIf="visit"> 
+  <span class="small-title">{{getTitle()}}</span>
+  <mat-card class="card" *ngFor="let seen of visit.sightSeens">
+    <mat-card-header>
+      <mat-card-title>{{getSightTitle(seen.sightId)}}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image src="{{getSightImage(seen.sightId)}}"/>
+    <mat-card-content>
+      <span>{{visit.user.firstName}} seen this at {{seen.dateSeen}}</span>
+    </mat-card-content>
+  </mat-card>
+  <span class="small-title">{{visit.user.firstName}} finished this visit in {{getTourTime()}}</span>
+  <button *ngIf="usersTour()" mat-raised-button color="accent" (click)="share()">Share</button>
+</div>

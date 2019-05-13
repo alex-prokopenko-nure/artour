@@ -6,6 +6,7 @@ using Artour.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,12 @@ namespace Artour.BLL.Services
 {
     public class SightImagesService : BaseService, ISightImagesService
     {
-        public SightImagesService(ApplicationDbContext applicationDbContext, IMapper mapper, IConfiguration configuration)
-            : base(applicationDbContext, mapper, configuration)
+        public SightImagesService(
+            ApplicationDbContext applicationDbContext,
+            IMapper mapper,
+            IConfiguration configuration,
+            IMemoryCache cache)
+            : base(applicationDbContext, mapper, configuration, cache)
         { }
 
         public async Task<SightImageViewModel> CreateImage(IFormFile fileToSave, String description, Int32 sightId)

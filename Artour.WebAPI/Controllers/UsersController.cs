@@ -15,11 +15,13 @@ namespace Artour.WebAPI.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly IMailSender _mailSender;
+        private readonly Random _random;
 
         public UsersController(IUsersService usersService, IMailSender mailSender)
         {
             _usersService = usersService;
             _mailSender = mailSender;
+            _random = new Random();
         }
 
         [HttpGet]
@@ -27,6 +29,17 @@ namespace Artour.WebAPI.Controllers
         {
             var result = await _usersService.GetAllUsers();
             return Ok(result);
+        }
+
+        [HttpGet("{userId}/send-code")]
+        public async Task<ActionResult<Int32>> SendUserCode(Int32 userId)
+        {
+            var result = await _usersService.GetUserById(userId);
+            Int32 code = _random.Next(100000, 999999);
+            Task.Run(() => {
+                _mailSender.SendAccessCode(result.Email, code.ToString());
+            });
+            return Ok(code);
         }
 
         [Authorize]

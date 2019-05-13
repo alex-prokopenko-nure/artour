@@ -24,7 +24,7 @@
     <None Update="Common\EmailTemplates\EmailConfirmation.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Common\EmailTemplates\PasswordRecovery.html">
+    <None Update="Common\EmailTemplates\AccessCode.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
