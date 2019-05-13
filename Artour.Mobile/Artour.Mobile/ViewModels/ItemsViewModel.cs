@@ -7,26 +7,22 @@ using Xamarin.Forms;
 
 using Artour.Mobile.Models;
 using Artour.Mobile.Views;
+using Artour.Mobile.Services;
+using System.Linq;
 
 namespace Artour.Mobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
+        public ObservableCollection<Tour> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
         {
-            Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            Title = "Active Tours";
+            Items = new ObservableCollection<Tour>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -39,10 +35,23 @@ namespace Artour.Mobile.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
+                var tours = await RootPage.ArtourApiService.GetAllToursAsync();
+                foreach (var tour in tours)
                 {
-                    Items.Add(item);
+                    Tour tourModel = new Tour
+                    {
+                        City = tour.City,
+                        CityId = tour.CityId,
+                        Comments = tour.Comments,
+                        Description = tour.Description,
+                        OwnerId = tour.OwnerId,
+                        Sights = tour.Sights,
+                        Source = $"{RootPage.ArtourApiService.BaseUrl}/api/sight-images/{tour.Sights.First().Images.First().SightImageId}/data",
+                        Title = tour.Title,
+                        TourId = tour.TourId,
+                        Visits = tour.Visits
+                    };
+                    Items.Add(tourModel);
                 }
             }
             catch (Exception ex)

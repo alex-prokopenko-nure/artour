@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using Artour.Mobile.Models;
 using Artour.Mobile.Views;
 using Artour.Mobile.ViewModels;
+using Artour.Mobile.Services;
 
 namespace Artour.Mobile.Views
 {
@@ -19,6 +21,7 @@ namespace Artour.Mobile.Views
     [DesignTimeVisible(true)]
     public partial class ItemsPage : ContentPage
     {
+        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
         ItemsViewModel viewModel;
 
         public ItemsPage()
@@ -30,7 +33,7 @@ namespace Artour.Mobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
+            var item = args.SelectedItem as Tour;
             if (item == null)
                 return;
 

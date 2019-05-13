@@ -7,7 +7,10 @@ namespace Artour.Mobile.Models
     public enum MenuItemType
     {
         Browse,
-        About
+        About,
+        Login,
+        Register,
+        Logout
     }
     public class HomeMenuItem
     {

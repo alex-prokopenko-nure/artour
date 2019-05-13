@@ -1,4 +1,5 @@
 ﻿using Artour.Mobile.Models;
+using Artour.Mobile.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,14 +14,18 @@ namespace Artour.Mobile.Views
     [DesignTimeVisible(true)]
     public partial class MainPage : MasterDetailPage
     {
+        MenuPage MenuPage { get => Master as MenuPage; }
+        public ArtourApiService ArtourApiService { get; set; }
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
         public MainPage()
         {
             InitializeComponent();
 
+            ArtourApiService = new ArtourApiService("http://3cd30875.ngrok.io");
+
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            MenuPages.Add((int)MenuItemType.Login, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
@@ -34,6 +39,12 @@ namespace Artour.Mobile.Views
                         break;
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
+                        break;
+                    case (int)MenuItemType.Login:
+                        MenuPages.Add(id, new NavigationPage(new LoginPage()));
+                        break;
+                    case (int)MenuItemType.Register:
+                        MenuPages.Add(id, new NavigationPage(new RegisterPage()));
                         break;
                 }
             }
@@ -49,6 +60,15 @@ namespace Artour.Mobile.Views
 
                 IsPresented = false;
             }
+        }
+        public async Task Login()
+        {
+            MenuPage.Login();
+            Detail = MenuPages[(int)MenuItemType.Browse];
+            if (Device.RuntimePlatform == Device.Android)
+                await Task.Delay(100);
+
+            IsPresented = false;
         }
     }
 }

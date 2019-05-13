@@ -23,18 +23,13 @@ namespace Artour.Mobile.Views
             BindingContext = this.viewModel = viewModel;
         }
 
-        public ItemDetailPage()
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            InitializeComponent();
+            var item = args.SelectedItem as Sight;
+            if (item == null)
+                return;
 
-            var item = new Item
-            {
-                Text = "Item 1",
-                Description = "This is an item description."
-            };
-
-            viewModel = new ItemDetailViewModel(item);
-            BindingContext = viewModel;
+            ItemsListView.SelectedItem = null;
         }
     }
 }
