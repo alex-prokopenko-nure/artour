@@ -44,19 +44,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.sub = this.route.params.subscribe((params) => {
       this.tourId = +params['tourId'];
     });
-    this.getTour(this.tourId);
+    await this.getTour(this.tourId);
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  getTour = (tourId: number) => {
-    this.tourService.getTour(tourId).subscribe(
+  getTour = async (tourId: number) => {
+    await this.tourService.getTour(tourId).toPromise().then(
       result => {
         this.tour = result;
         for (let i = 0; i < this.tour.sights.length; ++i) {
@@ -64,12 +64,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.tourService.getTourStatistics(tourId).subscribe(
+    await this.tourService.getTourStatistics(tourId).toPromise().then(
       result => {
         this.tourStatistics = result;
       }
     );
-    this.locationsService.getAllCities().subscribe(
+    await this.locationsService.getAllCities().toPromise().then(
       result => {
         this.cities = result;
       }
@@ -109,7 +109,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getCity = (cityId: number) => {
-    return this.cities.find(x => x.cityId == cityId).name;
+    let city = this.cities.find(x => x.cityId == cityId)
+    return city.name;
   }
 
   usersTour = () => {
