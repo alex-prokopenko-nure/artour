@@ -4,6 +4,8 @@
 // </auto-generated>
 //----------------------
 
+using Xamarin.Forms;
+
 namespace Artour.Mobile.Services
 {
 #pragma warning disable
@@ -1960,6 +1962,7 @@ namespace Artour.Mobile.Services
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Add("Authorization", $"Bearer {Application.Current.Properties["jwt_token"].ToString()}");
 
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
@@ -2127,6 +2130,7 @@ namespace Artour.Mobile.Services
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Add("Authorization", $"Bearer {Application.Current.Properties["jwt_token"].ToString()}");
 
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();

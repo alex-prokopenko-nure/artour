@@ -10,7 +10,7 @@ namespace Artour.Mobile.Models
         About,
         Login,
         Register,
-        Logout
+        Visit
     }
     public class HomeMenuItem
     {
