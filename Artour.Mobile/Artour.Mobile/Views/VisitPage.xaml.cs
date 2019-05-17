@@ -1,4 +1,5 @@
-﻿using Artour.Mobile.ViewModels;
+﻿using Artour.Mobile.Models;
+using Artour.Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,21 @@ namespace Artour.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class VisitPage : ContentPage
     {
+        VisitViewModel viewModel;
         public VisitPage(VisitViewModel visitViewModel)
         {
             InitializeComponent();
+
+            BindingContext = viewModel = visitViewModel;
+        }
+
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        {
+            var item = args.SelectedItem as SightSeen;
+            if (item == null)
+                return;
+
+            ItemsListView.SelectedItem = null;
         }
     }
 }

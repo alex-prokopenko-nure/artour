@@ -62,13 +62,20 @@ namespace Artour.Mobile.Views
             login.Clicked += async (sender, e) => {
                 Task.Run(async () =>
                 {
-                    string jwtToken = await RootPage.ArtourApiService.LoginUserAsync(new Services.LoginViewModel
+                    try
                     {
-                        Login = email.Text,
-                        Password = password.Text,
-                        Remember = true
-                    });
-                    Application.Current.Properties["jwt_token"] = jwtToken;
+                        string jwtToken = await RootPage.ArtourApiService.LoginUserAsync(new Services.LoginViewModel
+                        {
+                            Login = email.Text,
+                            Password = password.Text,
+                            Remember = true
+                        });
+                        Application.Current.Properties["jwt_token"] = jwtToken;
+                    }
+                    catch
+                    {
+
+                    }
                 }).Wait();
                 await RootPage.Login();
             };
