@@ -173,7 +173,7 @@ String sendPostRequest(String address) {
 }
 
 void sendCodeRequest(int userId) {
-  String response = sendGetRequest("http://953ac8f2.ngrok.io/api/users/" + String(userId) + "/send-code");
+  String response = sendGetRequest("http://8b52cc17.ngrok.io/api/users/" + String(userId) + "/send-code");
   if (response.length() != 0) {
     DynamicJsonDocument doc(1024);
     deserializeJson(doc, response);
@@ -185,23 +185,23 @@ void sendCodeRequest(int userId) {
 }
 
 void sendToursRequest() {
-  String response = sendGetRequest("http://953ac8f2.ngrok.io/api/tours/light");
+  String response = sendGetRequest("http://8b52cc17.ngrok.io/api/tours/light");
   if (response.length() != 0) {
     deserializeJson(tours, response);
   }
 }
 
 void sendStartVisitRequest() {
-  String response = sendPostRequest("http://953ac8f2.ngrok.io/api/visits/start?tourId=" + String(tourId) + "&userId=" + String(userId));
+  String response = sendPostRequest("http://8b52cc17.ngrok.io/api/visits/start?tourId=" + String(tourId) + "&userId=" + String(userId));
   visitId = response.substring(1, response.length() - 1);
 }
 
 void sendSightSeenRequest(int sightId) {
-  String response = sendPostRequest("http://953ac8f2.ngrok.io/api/sight-seens?sightId=" + String(sightId) + "&visitId=" + visitId);
+  String response = sendPostRequest("http://8b52cc17.ngrok.io/api/sight-seens?sightId=" + String(sightId) + "&visitId=" + visitId);
 }
 
 void sendFinishVisitRequest() {
-  String response = sendPostRequest("http://953ac8f2.ngrok.io/api/visits/" + visitId + "/finish");
+  String response = sendPostRequest("http://8b52cc17.ngrok.io/api/visits/" + visitId + "/finish");
 }
 
 void print_number(int number) {
@@ -213,8 +213,15 @@ void print_number(int number) {
 
 void print_title() {
   lcd.clear();
-  const char * title = tours[tourId - 1]["sights"][currentSight]["title"];
-  String toPrint(title);
+  String toPrint;
+  for (int i = 0; i < tours.size(); ++i) {
+    int currTourId = tours[i]["tourId"];
+    if (currTourId == tourId) {
+      const char * title = tours[i]["sights"][currentSight]["title"];
+      toPrint = String(title);
+      break;
+    }
+  } 
   if (toPrint.length() > 16) {
     String firstRow = toPrint.substring(0, 16);
     String secondRow = toPrint.substring(16, toPrint.length());
@@ -273,9 +280,18 @@ void processKey() {
     case TOUR_IN_PROGRESS:
     {
       if (lcd_key == btnRIGHT) {
-        int sightId = tours[tourId - 1]["sights"][currentSight++]["sightId"];
+        int sightId = 0;
+        int counter = 0;
+        for (int i = 0; i < tours.size(); ++i) {
+          int currTourId = tours[i]["tourId"];
+          if (currTourId == tourId) {
+            counter = i;
+            sightId = tours[i]["sights"][currentSight++]["sightId"];
+            break;
+          }
+        }
         sendSightSeenRequest(sightId);
-        if (currentSight < tours[tourId - 1]["sights"].size()) {
+        if (currentSight < tours[counter]["sights"].size()) {
           print_title();
         } else {
           sendFinishVisitRequest();
