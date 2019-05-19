@@ -10,6 +10,7 @@ namespace Artour.BLL.Services.Abstractions
     {
         Task<IEnumerable<UserViewModel>> GetAllUsers();
         Task<UserViewModel> GetUserById(Int32 userId);
+        String BuildToken(Int32 userId, Boolean remember);
         Task<UserStatisticsViewModel> GetUserStatistics(Int32 userId);
         Task<String> LoginUser(LoginViewModel login);
         Task RegisterUser(RegisterViewModel newUser);

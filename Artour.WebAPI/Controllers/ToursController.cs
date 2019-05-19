@@ -26,6 +26,13 @@ namespace Artour.WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("light")]
+        public async Task<ActionResult<IEnumerable<LightTourViewModel>>> GetAllToursLight()
+        {
+            var result = await _toursService.GetAllToursLight();
+            return Ok(result);
+        }
+
         [HttpGet("{tourId}")]
         public async Task<ActionResult<TourViewModel>> GetTour(Int32 tourId)
         {

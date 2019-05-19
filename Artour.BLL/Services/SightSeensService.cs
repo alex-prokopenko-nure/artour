@@ -22,9 +22,9 @@ namespace Artour.BLL.Services
             : base(applicationDbContext, mapper, configuration, cache)
         { }
 
-        public async Task CreateSightSeen(SightSeenViewModel sightSeen)
+        public async Task CreateSightSeen(Int32 sightId, Guid visitId)
         {
-            var sightSeenToAdd = _mapper.Map<SightSeen>(sightSeen);
+            var sightSeenToAdd = new SightSeen{ SightId = sightId, VisitId = visitId, DateSeen = DateTimeOffset.Now};
             await _applicationDbContext.AddAsync(sightSeenToAdd);
             await _applicationDbContext.SaveChangesAsync();
         }

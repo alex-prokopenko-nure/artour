@@ -63,6 +63,15 @@ namespace Artour.BLL.Services
             return _mapper.Map<IEnumerable<TourViewModel>>(result);
         }
 
+        public async Task<IEnumerable<LightTourViewModel>> GetAllToursLight()
+        {
+            var result = await _applicationDbContext.Tours
+                .Include(x => x.Sights)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<LightTourViewModel>>(result);
+        }
+
         public async Task<TourViewModel> GetTour(int tourId)
         {
             var result = await _applicationDbContext.Tours

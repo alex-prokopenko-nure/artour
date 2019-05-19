@@ -38,19 +38,19 @@ namespace Artour.BLL.Services
             return _mapper.Map<VisitViewModel>(result);
         }
 
-        public async Task<Guid> StartVisit(VisitViewModel visit)
+        public async Task<Guid> StartVisit(Int32 tourId, Int32 userId)
         {
             Guid visitGuid = Guid.NewGuid();
             Visit visitToAdd =
                 new Visit
                 {
                     VisitId = visitGuid,
-                    TourId = visit.TourId,
-                    UserId = visit.UserId,
-                    StartDate = visit.StartDate
+                    TourId = tourId,
+                    UserId = userId,
+                    StartDate = DateTimeOffset.Now
                 };
-            visitToAdd.Tour = await _applicationDbContext.Tours.FirstOrDefaultAsync(x => x.TourId == visit.TourId);
-            visitToAdd.User = await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.UserId == visit.UserId);
+            visitToAdd.Tour = await _applicationDbContext.Tours.FirstOrDefaultAsync(x => x.TourId == tourId);
+            visitToAdd.User = await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.UserId == userId);
 
             await _applicationDbContext.Visits.AddAsync(visitToAdd);
             await _applicationDbContext.SaveChangesAsync();

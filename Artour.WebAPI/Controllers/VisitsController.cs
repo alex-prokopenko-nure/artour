@@ -1,5 +1,6 @@
 ﻿using Artour.BLL.Services.Abstractions;
 using Artour.BLL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -28,13 +29,15 @@ namespace Artour.WebAPI.Controllers
 
 
         [HttpPost("start")]
-        public async Task<ActionResult<Guid>> StartVisit([FromBody]VisitViewModel visit)
+        [Authorize]
+        public async Task<ActionResult<Guid>> StartVisit(Int32 tourId, Int32 userId)
         {
-            var result = await _visitsService.StartVisit(visit);
+            var result = await _visitsService.StartVisit(tourId, userId);
             return Ok(result);
         }
 
-        [HttpPut("{visitId}/finish")]
+        [HttpPost("{visitId}/finish")]
+        [Authorize]
         public async Task<ActionResult> FinishVisit(Guid visitId)
         {
             await _visitsService.FinishVisit(visitId);

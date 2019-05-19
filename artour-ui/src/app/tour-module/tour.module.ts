@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TourRoutingModule } from './tour-routing.module';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HomeComponent } from './home/home.component';
@@ -58,8 +59,8 @@ import { VisitDetailsComponent } from './visit-details/visit-details.component';
 import { VisitService } from './services/visit.service';
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { SharedModule } from '../shared-module';
-import { BrowserModule } from '@angular/platform-browser';
 import { SystemComponent } from './system/system.component';
+import { AuthInterceptor } from './http-helpers/auth.interceptor';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -70,7 +71,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
 @NgModule({
   declarations: [HomeComponent, ProfileComponent, LoginComponent, RegisterComponent, SetPasswordComponent, DeleteDialogComponent, DetailsComponent, SightDetailsComponent, ImageDialogComponent, ShareButtonsComponent, VisitDetailsComponent, SystemComponent],
   imports: [
-    BrowserModule,
     CommonModule,
     TourRoutingModule,
     FormsModule,
@@ -124,7 +124,12 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],
   entryComponents: [SetPasswordComponent, DeleteDialogComponent, SightDetailsComponent, ImageDialogComponent, ShareButtonsComponent]
 })

@@ -8,6 +8,6 @@ namespace Artour.BLL.Services.Abstractions
 {
     public interface ISightSeensService
     {
-        Task CreateSightSeen(SightSeenViewModel sightSeen);
+        Task CreateSightSeen(Int32 sightId, Guid visitId);
     }
 }

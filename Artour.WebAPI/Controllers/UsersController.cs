@@ -32,26 +32,28 @@ namespace Artour.WebAPI.Controllers
         }
 
         [HttpGet("{userId}/send-code")]
-        public async Task<ActionResult<Int32>> SendUserCode(Int32 userId)
+        public async Task<ActionResult<CodeModel>> SendUserCode(Int32 userId)
         {
             var result = await _usersService.GetUserById(userId);
             Int32 code = _random.Next(100000, 999999);
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 _mailSender.SendAccessCode(result.Email, code.ToString());
             });
-            return Ok(code);
+            var token = _usersService.BuildToken(userId, true);
+            return Ok(new CodeModel { Token = token, Code = code.ToString()});
         }
 
-        [Authorize]
         [HttpGet("{userId}")]
+        [Authorize]
         public async Task<ActionResult<UserViewModel>> GetUser(Int32 userId)
         {
             var result = await _usersService.GetUserById(userId);
             return Ok(result);
         }
 
-        [Authorize]
         [HttpGet("{userId}/statistics")]
+        [Authorize]
         public async Task<ActionResult<UserStatisticsViewModel>> GetUserStatistics(Int32 userId)
         {
             var result = await _usersService.GetUserStatistics(userId);

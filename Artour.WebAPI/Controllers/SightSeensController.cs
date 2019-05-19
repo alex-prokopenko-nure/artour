@@ -1,5 +1,6 @@
 ﻿using Artour.BLL.Services.Abstractions;
 using Artour.BLL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,10 @@ namespace Artour.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateSightSeen([FromBody]SightSeenViewModel sightSeen)
+        [Authorize]
+        public async Task<ActionResult> CreateSightSeen(Int32 sightId, Guid visitId)
         {
-            await _sightSeensService.CreateSightSeen(sightSeen);
+            await _sightSeensService.CreateSightSeen(sightId, visitId);
             return Ok();
         }
     }

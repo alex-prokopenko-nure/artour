@@ -9,6 +9,7 @@ namespace Artour.BLL.Services.Abstractions
     public interface IToursService
     {
         Task<IEnumerable<TourViewModel>> GetAllTours();
+        Task<IEnumerable<LightTourViewModel>> GetAllToursLight();
         Task<TourViewModel> GetTour(Int32 tourId);
         Task<IEnumerable<TourViewModel>> GetUsersTours(Int32 userId);
         Task<TourStatisticsViewModel> GetTourStatistics(Int32 tourId);

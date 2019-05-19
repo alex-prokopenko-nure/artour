@@ -68,7 +68,7 @@ namespace Artour.BLL.Services
             }
         }
 
-        private String BuildToken(Int32 userId, Boolean remember)
+        public String BuildToken(Int32 userId, Boolean remember)
         {
             var key = new SymmetricSecurityKey(Convert.FromBase64String(jwtSettings.IssuerSigningKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
